@@ -1,4 +1,4 @@
-package api;
+package api.receive;
 
 public interface ITelegramBotReceiveListener {
 
