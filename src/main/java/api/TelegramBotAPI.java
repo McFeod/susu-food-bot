@@ -14,10 +14,10 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TelegramBotAPI implements ITelegramBotAPI {
+import static api.APIConstants.BOT_NAME;
+import static api.APIConstants.BOT_TOKEN;
 
-    private final String BOT_TOKEN = "token";
-    private final String BOT_NAME = "susufoodbot";
+public class TelegramBotAPI implements ITelegramBotAPI {
 
     private TelegramBotsApi telegramBotsApi;
     private TelegramLongPollingBot telegramLongPollingBot;
