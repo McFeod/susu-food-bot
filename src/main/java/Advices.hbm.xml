@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="logic">
+  <class name="Advice" table="advices">
+    <id column="advice_id" name="id" type="java.lang.Long">
+      <generator class="increment"/>
+    </id>
+    <property column="advice" name="advice" type="java.lang.String" not-null="true"/>
+
+  </class>
+</hibernate-mapping>
