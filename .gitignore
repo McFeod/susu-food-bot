@@ -1,4 +1,4 @@
 /.idea/*
 /target/*
-/TelegramBot.iml
+*.iml
 /src/main/java/api/APIConstants.java
