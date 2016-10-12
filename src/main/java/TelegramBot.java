@@ -1,5 +1,7 @@
 import api.ITelegramBotAPI;
 import api.TelegramBotAPI;
+import api.exceptions.BotLogicException;
+import api.exceptions.NotImplementedException;
 import api.receive.IMessageReceiver;
 import api.receive.ITelegramBotReceiveListener;
 import api.receive.ReceiverListener;
@@ -30,17 +32,17 @@ public class TelegramBot {
             }
 
             @Override
-            public void onStop(Long id) {
+            public void onStop(Long id) throws BotLogicException {
 
             }
 
             @Override
-            public void onHelp(Long id) {
+            public void onHelp(Long id) throws BotLogicException {
                 telegramBotAPI.sendMessage(id, "I can't help you");
             }
 
             @Override
-            public void onGetFeedPoints(Long id) {
+            public void onGetFeedPoints(Long id) throws BotLogicException {
                 List<String> feedPoints = new ArrayList<>();
                 feedPoints.add("123");
                 feedPoints.add("456");
@@ -50,37 +52,37 @@ public class TelegramBot {
             }
 
             @Override
-            public void onGetUserFeedPoints(Long id) {
+            public void onGetUserFeedPoints(Long id) throws BotLogicException {
 
             }
 
             @Override
-            public void onAddFeedPoint(Long id, String text) {
+            public void onAddFeedPoint(Long id, String text) throws BotLogicException {
 
             }
 
             @Override
-            public void onComplainFeedPoint(Long id, String text) {
+            public void onComplainFeedPoint(Long id, String text) throws BotLogicException {
+                 throw new NotImplementedException();
+            }
+
+            @Override
+            public void onGetMessages(Long id, String text) throws BotLogicException {
 
             }
 
             @Override
-            public void onGetMessages(Long id, String text) {
+            public void onRunOut(Long id, String text) throws BotLogicException {
 
             }
 
             @Override
-            public void onRunOut(Long id, String text) {
+            public void onGetAdvices(Long id, String text) throws BotLogicException {
 
             }
 
             @Override
-            public void onGetAdvices(Long id, String text) {
-
-            }
-
-            @Override
-            public void onAddAdvice(Long id, String text) {
+            public void onAddAdvice(Long id, String text) throws BotLogicException {
 
             }
 
