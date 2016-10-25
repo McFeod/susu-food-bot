@@ -32,10 +32,12 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                 @Override
                 public String getBotToken() {
                     return BOT_TOKEN;
+                	//return "";
                 }
 
                 public String getBotUsername() {
                     return BOT_NAME;
+                	//return "";
                 }
 
                 public void onUpdateReceived(Update update) {

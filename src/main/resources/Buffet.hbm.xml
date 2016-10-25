@@ -8,6 +8,7 @@
       <generator class="increment"/>
     </id>
     <property column="name" name="name" type="java.lang.String" unique="true" not-null="true"/>
-
+	<property column="admin" name="isAdmin" type="java.lang.Boolean" not-null="true"/>
+	<property column="complained" name="isComplained" type="java.lang.Boolean" not-null="true"/>
   </class>
 </hibernate-mapping>

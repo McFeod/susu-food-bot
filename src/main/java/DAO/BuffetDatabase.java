@@ -134,4 +134,66 @@ public class BuffetDatabase
 	    return buffets;
 	}
 	
+	public Collection getBuffetsByAdmin(Boolean isAdmin) throws SQLException {
+	    Session session = null;
+	    List buffets = new ArrayList<Buffet>();
+	    try 
+	    {
+	    	session = HibernateUtil.getSessionFactory().openSession();
+	    	session.beginTransaction();
+	    	//Long driver_id = driver.getId();
+	    	Query query = session.createQuery( " from Buffet "+ " where admin = :isAdmin ").setBoolean("isAdmin", isAdmin);
+	         // .setLong("name", name);
+	    	buffets = (List<Buffet>) query.list();
+	    	session.getTransaction().commit();
+
+	    } 
+	    finally 
+	    {
+	    	if (session != null && session.isOpen()) {
+	    		session.close();
+	    	}
+	    }
+	    return buffets;
+	}
+	
+	public Collection getBuffetsByComplain(Boolean isComplained) throws SQLException {
+	    Session session = null;
+	    List buffets = new ArrayList<Buffet>();
+	    try 
+	    {
+	    	session = HibernateUtil.getSessionFactory().openSession();
+	    	session.beginTransaction();
+	    	//Long driver_id = driver.getId();
+	    	Query query = session.createQuery( " from Buffet "+ " where complained = :isComplained ").setBoolean("isComplained", isComplained);
+	         // .setLong("name", name);
+	    	buffets = (List<Buffet>) query.list();
+	    	session.getTransaction().commit();
+
+	    } 
+	    finally 
+	    {
+	    	if (session != null && session.isOpen()) {
+	    		session.close();
+	    	}
+	    }
+	    return buffets;
+	}
+	
+	public void updateBuffet(Buffet buf) throws SQLException 
+	{
+	    Session session = null;
+	    try {
+	    	session = HibernateUtil.getSessionFactory().openSession();
+	    	session.beginTransaction();
+	    	session.update(buf);
+	    	session.getTransaction().commit();
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+	    } finally {
+	    	if (session != null && session.isOpen()) {
+	    		session.close();
+	    	}
+	    }
+	}
 }
