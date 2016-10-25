@@ -6,6 +6,8 @@ public class Buffet
 
 	private long id;
 	private String name;
+	private Boolean isAdmin;
+	private Boolean isComplained;
 	public Buffet(){}
 	public void setId(long id)
 	{
@@ -22,5 +24,24 @@ public class Buffet
 	public String getName()
 	{
 		return name;
+	}
+	public void setIsAdmin(Boolean isAdmin)
+	{
+		this.isAdmin = isAdmin;
+	}
+	
+	public Boolean getIsAdmin()
+	{
+		return isAdmin;
+	}
+	
+	public void setIsComplained(Boolean isComplained)
+	{
+		this.isComplained = isComplained;
+	}
+	
+	public Boolean getIsComplained()
+	{
+		return isComplained;
 	}
 }

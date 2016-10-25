@@ -12,6 +12,8 @@ import DAO.BuffetDatabase;
 import DAO.AdviceDAO;
 import DAO.ProductsInStockDAO;
 import DAO.ProductsNotInStockDAO;
+import api.exceptions.FeedPointDoesNotExists;
+import feedpointevents.FeedPointEventHandler;
 import logic.Product;
 import logic.Advice;
 import logic.Buffet;
@@ -25,7 +27,7 @@ public class App
     public static void main( String[] args )
     {
     	Buffet buf = new Buffet(), buf1 = new Buffet();
-    	buf.setName("buf3");
+    	buf.setName("buf4");
     	buf1.setName("buf3");
     	BuffetDatabase BDB = new BuffetDatabase();
     	ProductDAO PDB = new ProductDAO();
@@ -39,27 +41,32 @@ public class App
     	adv1.setAdvice("Anither advice");
     	ProductsInStock prin = new ProductsInStock();
     	pr.setId(1);
-    	buf.setId(1);
+    	buf.setId(3);
+    	buf.setIsAdmin(true);
+    	buf.setIsComplained(false);
     	adv.setId(3);
     	prin.setBuffet(buf);
     	prin.setProduct(pr);
     	
     	try {
     		//BDB.addBuffet(buf);
+    		//BDB.updateBuffet(buf);
     		//PDB.addProduct(pr);
     		//PIDB.addProductInStock(prin);
     	//	PIDB.addProductInStock(prin);
     		//PIDB.addProductInStock(prin);
     	//	PIDB.addProductInStock(prin);
-			Collection buffets = PIDB.getProductsInStockByProduct(pr);
+			//FeedPointEventHandler.addFeedPoint("bufffffff");
+			List<String> buffets = FeedPointEventHandler.getFeedPoints();
 			Iterator iterator = buffets.iterator();
+			System.out.println(buffets.size());
 			while (iterator.hasNext()) 
 			{
-			      prin = (ProductsInStock)iterator.next();
-			      System.out.println(pr.getName());
+			      
+			      System.out.println(iterator.next());
 			}
     		
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
     	

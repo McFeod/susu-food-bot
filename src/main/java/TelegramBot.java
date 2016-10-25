@@ -5,6 +5,7 @@ import api.exceptions.NotImplementedException;
 import api.receive.IMessageReceiver;
 import api.receive.ITelegramBotReceiveListener;
 import api.receive.ReceiverListener;
+import feedpointevents.FeedPointEventHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,27 +44,25 @@ public class TelegramBot {
 
             @Override
             public void onGetFeedPoints(Long id) throws BotLogicException {
-                List<String> feedPoints = new ArrayList<>();
-                feedPoints.add("123");
-                feedPoints.add("456");
-                feedPoints.add("789");
-                feedPoints.add("qwerty");
-                telegramBotAPI.sendMessage(id, "Feed points:", feedPoints);
+                List<String> feedPoints = FeedPointEventHandler.getFeedPoints();
+                
+                telegramBotAPI.sendMessage(id, "Feed points:\n" + String.join("\n", feedPoints));
             }
 
             @Override
             public void onGetUserFeedPoints(Long id) throws BotLogicException {
-
+            	List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
+            	telegramBotAPI.sendMessage(id, "User feed points:\n" + String.join("\n", feedPoints));
             }
 
             @Override
             public void onAddFeedPoint(Long id, String text) throws BotLogicException {
-
+            	FeedPointEventHandler.addFeedPoint(text);
             }
 
             @Override
             public void onComplainFeedPoint(Long id, String text) throws BotLogicException {
-                 throw new NotImplementedException();
+            	FeedPointEventHandler.complainFeedPoint(text);
             }
 
             @Override
