@@ -1,6 +1,8 @@
 import api.ITelegramBotAPI;
 import api.TelegramBotAPI;
 import api.exceptions.BotLogicException;
+import api.exceptions.EmptyFeedPointList;
+import api.exceptions.EmptyUserFeedPointList;
 import api.exceptions.NotImplementedException;
 import api.receive.IMessageReceiver;
 import api.receive.ITelegramBotReceiveListener;
@@ -45,13 +47,16 @@ public class TelegramBot {
             @Override
             public void onGetFeedPoints(Long id) throws BotLogicException {
                 List<String> feedPoints = FeedPointEventHandler.getFeedPoints();
-                
+                if (feedPoints.size() == 0)
+                	throw new EmptyFeedPointList();
                 telegramBotAPI.sendMessage(id, "Feed points:\n" + String.join("\n", feedPoints));
             }
 
             @Override
             public void onGetUserFeedPoints(Long id) throws BotLogicException {
             	List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
+            	if (feedPoints.size() == 0)
+                	throw new EmptyUserFeedPointList();
             	telegramBotAPI.sendMessage(id, "User feed points:\n" + String.join("\n", feedPoints));
             }
 
