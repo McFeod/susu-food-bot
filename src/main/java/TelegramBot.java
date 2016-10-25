@@ -1,16 +1,14 @@
 import api.ITelegramBotAPI;
 import api.TelegramBotAPI;
-import api.exceptions.BotLogicException;
-import api.exceptions.EmptyFeedPointList;
-import api.exceptions.EmptyUserFeedPointList;
-import api.exceptions.NotImplementedException;
+import api.exceptions.*;
 import api.receive.IMessageReceiver;
 import api.receive.ITelegramBotReceiveListener;
 import api.receive.ReceiverListener;
 import feedpointevents.FeedPointEventHandler;
+import handlers.AdvicesEventHandler;
+import handlers.MessagesEventHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TelegramBot {
 
@@ -72,22 +70,36 @@ public class TelegramBot {
 
             @Override
             public void onGetMessages(Long id, String text) throws BotLogicException {
+                HashMap<String, String> messages = MessagesEventHandler.getMessages(text);
 
+                if (messages.size() == 0)
+                    throw new EmptyUserMessagesList();
+
+                String msg = "Messages:";
+                for (Map.Entry<String, String> entry : messages.entrySet())
+                    msg += "\n" + entry.getKey() + " - " + entry.getValue();
+                telegramBotAPI.sendMessage(id, msg);
             }
 
             @Override
             public void onRunOut(Long id, String text) throws BotLogicException {
-
+                String[] params = text.split(" ");
+                if (params.length != 2)
+                    throw new WrongRunOutParams();
+                MessagesEventHandler.runOut(params[0], params[1]);
             }
 
             @Override
             public void onGetAdvices(Long id, String text) throws BotLogicException {
-
+                List<String> advices = AdvicesEventHandler.getAdvices();
+                if (advices.size() == 0)
+                    throw new EmptyAdviceList();
+                telegramBotAPI.sendMessage(id, "Advices:\n" + String.join("\n", advices));
             }
 
             @Override
             public void onAddAdvice(Long id, String text) throws BotLogicException {
-
+                AdvicesEventHandler.addAdvice(text);
             }
 
             @Override
