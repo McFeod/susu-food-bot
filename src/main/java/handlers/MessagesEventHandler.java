@@ -44,8 +44,17 @@ public class MessagesEventHandler {
 
 			Iterator iterator = products.iterator();
 			while (iterator.hasNext()) {
-				ProductsNotInStock product = (ProductsNotInStock) iterator.next();
-				messages.put(product.getBuffet().getName(), product.getProduct().getName());
+				ProductsNotInStock productsNotInStock = (ProductsNotInStock) iterator.next();
+
+				long buffetID = productsNotInStock.getBuffet().getId();
+				BuffetDatabase buffetDB = new BuffetDatabase();
+				Buffet buffet = buffetDB.getBuffetById(buffetID);
+
+				long productID = productsNotInStock.getProduct().getId();
+				ProductDAO productDB = new ProductDAO();
+				Product product = productDB.getProductById(productID);
+
+				messages.put(buffet.getName(), product.getName());
 			}
 		} catch (FeedPointDoesNotExists e) {
 			throw e;
