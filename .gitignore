@@ -3,5 +3,5 @@
 *.iml
 /src/main/java/api/APIConstants.java
 /target/
-
+/src/main/resources/hibernate.cfg.xml
 /bin/
