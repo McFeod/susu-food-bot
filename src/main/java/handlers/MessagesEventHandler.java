@@ -1,24 +1,24 @@
 package handlers;
 
-import DAO.*;
-import api.exceptions.EmptyFeedPointList;
-import api.exceptions.EmptyUserMessagesList;
+import DAO.BuffetDatabase;
+import DAO.ProductDAO;
+import DAO.ProductsNotInStockDAO;
+import api.exceptions.BotLogicException;
 import api.exceptions.FeedPointDoesNotExists;
+import api.exceptions.NotImplementedException;
 import api.exceptions.WrongRunOutParams;
-import logic.Advice;
 import logic.Buffet;
 import logic.Product;
 import logic.ProductsNotInStock;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class MessagesEventHandler {
 
-	public static HashMap<String, String> getMessages(String buffetName) throws FeedPointDoesNotExists {
+	public static HashMap<String, String> getMessages(String buffetName) throws BotLogicException {
 		HashMap<String, String> messages = new HashMap<>();
 		try {
 			ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
@@ -45,26 +45,17 @@ public class MessagesEventHandler {
 			Iterator iterator = products.iterator();
 			while (iterator.hasNext()) {
 				ProductsNotInStock productsNotInStock = (ProductsNotInStock) iterator.next();
-
-				long buffetID = productsNotInStock.getBuffet().getId();
-				BuffetDatabase buffetDB = new BuffetDatabase();
-				Buffet buffet = buffetDB.getBuffetById(buffetID);
-
-				long productID = productsNotInStock.getProduct().getId();
-				ProductDAO productDB = new ProductDAO();
-				Product product = productDB.getProductById(productID);
-
-				messages.put(buffet.getName(), product.getName());
+				messages.put(productsNotInStock.getBuffet().getName(), productsNotInStock.getProduct().getName());
 			}
 		} catch (FeedPointDoesNotExists e) {
 			throw e;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new NotImplementedException();
 		}
 		return messages;
 	}
 
-	public static void runOut(String buffetName, String productName) throws WrongRunOutParams {
+	public static void runOut(String buffetName, String productName) throws BotLogicException {
 		try {
 			ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
 			ProductsNotInStock productNotInStock = new ProductsNotInStock();
@@ -82,7 +73,13 @@ public class MessagesEventHandler {
 			if (productsIterator.hasNext())
 				product = (Product) productsIterator.next();
 
-			if (buffet == null || product == null)
+			if (product == null) {
+				product = new Product();
+				product.setName(productName);
+				productDB.addProduct(product);
+			}
+
+			if (buffet == null)
 				throw new WrongRunOutParams();
 
 			productNotInStock.setBuffet(buffet);
@@ -92,7 +89,7 @@ public class MessagesEventHandler {
 		} catch (WrongRunOutParams e) {
 			throw e;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new NotImplementedException();
 		}
 	}
 
