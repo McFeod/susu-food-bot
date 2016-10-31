@@ -54,26 +54,26 @@ public class TelegramBot {
             public void onGetFeedPoints(Long id) throws BotLogicException {
                 List<String> feedPoints = FeedPointEventHandler.getFeedPoints();
                 if (feedPoints.size() == 0)
-                	throw new EmptyFeedPointList();
+                    throw new EmptyFeedPointList();
                 telegramBotAPI.sendMessage(id, "Feed points:\n" + String.join("\n", feedPoints));
             }
 
             @Override
             public void onGetUserFeedPoints(Long id) throws BotLogicException {
-            	List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
-            	if (feedPoints.size() == 0)
-                	throw new EmptyUserFeedPointList();
-            	telegramBotAPI.sendMessage(id, "User feed points:\n" + String.join("\n", feedPoints));
+                List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
+                if (feedPoints.size() == 0)
+                    throw new EmptyUserFeedPointList();
+                telegramBotAPI.sendMessage(id, "User feed points:\n" + String.join("\n", feedPoints));
             }
 
             @Override
             public void onAddFeedPoint(Long id, String text) throws BotLogicException {
-            	FeedPointEventHandler.addFeedPoint(text);
+                FeedPointEventHandler.addFeedPoint(text);
             }
 
             @Override
             public void onComplainFeedPoint(Long id, String text) throws BotLogicException {
-            	FeedPointEventHandler.complainFeedPoint(text);
+                FeedPointEventHandler.complainFeedPoint(text);
             }
 
             @Override

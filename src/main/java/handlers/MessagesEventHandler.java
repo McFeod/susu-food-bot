@@ -18,79 +18,79 @@ import java.util.Iterator;
 
 public class MessagesEventHandler {
 
-	public static HashMap<String, String> getMessages(String buffetName) throws BotLogicException {
-		HashMap<String, String> messages = new HashMap<>();
-		try {
-			ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
-			Collection products;
+    public static HashMap<String, String> getMessages(String buffetName) throws BotLogicException {
+        HashMap<String, String> messages = new HashMap<>();
+        try {
+            ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
+            Collection products;
 
-			if (buffetName == null || buffetName.isEmpty())
-				products = BDB.getAllProductsNotInStock();
-			else {
-				Buffet buffet = null;
-				BuffetDatabase buffetDB = new BuffetDatabase();
-				Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
-				if (buffetsIterator.hasNext())
-					buffet = (Buffet) buffetsIterator.next();
+            if (buffetName == null || buffetName.isEmpty())
+                products = BDB.getAllProductsNotInStock();
+            else {
+                Buffet buffet = null;
+                BuffetDatabase buffetDB = new BuffetDatabase();
+                Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
+                if (buffetsIterator.hasNext())
+                    buffet = (Buffet) buffetsIterator.next();
 
-				if (buffet == null)
-					throw new FeedPointDoesNotExists();
+                if (buffet == null)
+                    throw new FeedPointDoesNotExists();
 
-				products = BDB.getProductsNotInStockByBuffet(buffet);
-			}
+                products = BDB.getProductsNotInStockByBuffet(buffet);
+            }
 
-			if (products == null)
-				throw new FeedPointDoesNotExists();
+            if (products == null)
+                throw new FeedPointDoesNotExists();
 
-			Iterator iterator = products.iterator();
-			while (iterator.hasNext()) {
-				ProductsNotInStock productsNotInStock = (ProductsNotInStock) iterator.next();
-				messages.put(productsNotInStock.getBuffet().getName(), productsNotInStock.getProduct().getName());
-			}
-		} catch (FeedPointDoesNotExists e) {
-			throw e;
-		} catch (SQLException e) {
-			throw new NotImplementedException();
-		}
-		return messages;
-	}
+            Iterator iterator = products.iterator();
+            while (iterator.hasNext()) {
+                ProductsNotInStock productsNotInStock = (ProductsNotInStock) iterator.next();
+                messages.put(productsNotInStock.getBuffet().getName(), productsNotInStock.getProduct().getName());
+            }
+        } catch (FeedPointDoesNotExists e) {
+            throw e;
+        } catch (SQLException e) {
+            throw new NotImplementedException();
+        }
+        return messages;
+    }
 
-	public static void runOut(String buffetName, String productName) throws BotLogicException {
-		try {
-			ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
-			ProductsNotInStock productNotInStock = new ProductsNotInStock();
+    public static void runOut(String buffetName, String productName) throws BotLogicException {
+        try {
+            ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
+            ProductsNotInStock productNotInStock = new ProductsNotInStock();
 
-			Buffet buffet = null;
-			Product product = null;
+            Buffet buffet = null;
+            Product product = null;
 
-			BuffetDatabase buffetDB = new BuffetDatabase();
-			Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
-			if (buffetsIterator.hasNext())
-				buffet = (Buffet) buffetsIterator.next();
+            BuffetDatabase buffetDB = new BuffetDatabase();
+            Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
+            if (buffetsIterator.hasNext())
+                buffet = (Buffet) buffetsIterator.next();
 
-			ProductDAO productDB = new ProductDAO();
-			Iterator productsIterator = productDB.getProductsByName(productName).iterator();
-			if (productsIterator.hasNext())
-				product = (Product) productsIterator.next();
+            ProductDAO productDB = new ProductDAO();
+            Iterator productsIterator = productDB.getProductsByName(productName).iterator();
+            if (productsIterator.hasNext())
+                product = (Product) productsIterator.next();
 
-			if (product == null) {
-				product = new Product();
-				product.setName(productName);
-				productDB.addProduct(product);
-			}
+            if (product == null) {
+                product = new Product();
+                product.setName(productName);
+                productDB.addProduct(product);
+            }
 
-			if (buffet == null)
-				throw new WrongRunOutParams();
+            if (buffet == null)
+                throw new WrongRunOutParams();
 
-			productNotInStock.setBuffet(buffet);
-			productNotInStock.setProduct(product);
+            productNotInStock.setBuffet(buffet);
+            productNotInStock.setProduct(product);
 
-			BDB.addProductInStock(productNotInStock);
-		} catch (WrongRunOutParams e) {
-			throw e;
-		} catch (SQLException e) {
-			throw new NotImplementedException();
-		}
-	}
+            BDB.addProductInStock(productNotInStock);
+        } catch (WrongRunOutParams e) {
+            throw e;
+        } catch (SQLException e) {
+            throw new NotImplementedException();
+        }
+    }
 
 }
