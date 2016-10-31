@@ -3,6 +3,6 @@
 *.iml
 /src/main/java/api/APIConstants.java
 /target/
-/src/main/resources/hibernate.cfg.xml
 /bin/
 *META-INF/
+/src/main/java/util/ConnectionSettings.java

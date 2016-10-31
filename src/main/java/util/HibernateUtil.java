@@ -9,7 +9,7 @@ public class HibernateUtil {
     static {
         try {
             Configuration configuration = new Configuration();
-            // todo use env variables
+            configuration.setProperties(ConnectionSettings.getSettings());  // see ConnectionSettingsExample
             sessionFactory = configuration.configure().buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
