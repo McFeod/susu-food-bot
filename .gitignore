@@ -5,3 +5,4 @@
 /target/
 /src/main/resources/hibernate.cfg.xml
 /bin/
+*META-INF/
