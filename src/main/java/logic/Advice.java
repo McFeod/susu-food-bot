@@ -6,7 +6,19 @@ public class Advice {
 
     public Advice() {
     }
-
+    
+    public Advice(String advice)
+    {
+        this.advice = advice;
+    }
+    
+    public Advice (long id, String advice)
+    {
+        this.id = id;
+        this.advice = advice;
+    }
+    
+    
     public void setId(long id) {
         this.id = id;
     }

@@ -17,26 +17,22 @@ public class AdviceDAO {
     public AdviceDAO() {
     }
 
+    
     public void addAdvice(Advice advice) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        	session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.save(advice);
             session.getTransaction().commit();
-            //HibernateUtil.shutdown();
-            if (session != null && session.isOpen()) {
-
-                session.close();
-            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
+        }// finally {
+           // if (session != null && session.isOpen()) {
 
-                session.close();
-            }
-        }
+            //    session.close();
+           // }
+        //}
     }
 
     public Collection getAllAdvices() throws SQLException {
@@ -59,16 +55,16 @@ public class AdviceDAO {
     public void deleteAdvice(Advice advice) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.delete(advice);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        } //finally {
+           // if (session != null && session.isOpen()) {
+           //     session.close();
+          //  }
+       // }
     }
 }

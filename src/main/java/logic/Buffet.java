@@ -11,6 +11,21 @@ public class Buffet {
     public Buffet() {
     }
 
+    public Buffet(String name, Boolean isAdmin, Boolean isComplained)
+    {
+        this.name = name;
+        this.isAdmin = isAdmin;
+        this.isComplained = isComplained;
+    }
+    
+    public Buffet(long id,String name, Boolean isAdmin, Boolean isComplained)
+    {
+        this.id = id;
+        this.name = name;
+        this.isAdmin = isAdmin;
+        this.isComplained = isComplained;
+    }
+    
     public void setId(long id) {
         this.id = id;
     }

@@ -8,6 +8,17 @@ public class ProductsInStock {
     public ProductsInStock() {
     }
 
+    public ProductsInStock(Product product, Buffet buffet) {
+        this.product = product;
+        this.buffet = buffet;
+    }
+    
+    public ProductsInStock(long id,Product product, Buffet buffet) {
+        this.product = product;
+        this.buffet = buffet;
+        this.id = id;
+    }
+    
     public void setId(long id) {
         this.id = id;
     }
