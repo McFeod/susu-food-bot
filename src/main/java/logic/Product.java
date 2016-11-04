@@ -7,6 +7,17 @@ public class Product {
     public Product() {
     }
 
+    public Product(String name)
+    {
+        this.name = name;
+    }
+    
+    public Product(String name,long id)
+    {
+        this.name = name;
+        this.id = id;
+    }
+    
     public void setId(long id) {
         this.id = id;
     }

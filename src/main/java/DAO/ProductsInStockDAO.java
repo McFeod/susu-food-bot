@@ -23,7 +23,7 @@ public class ProductsInStockDAO {
     public void addProductInStock(ProductsInStock productInStock) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.save(productInStock);
             session.getTransaction().commit();
@@ -34,12 +34,7 @@ public class ProductsInStockDAO {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-
-                session.close();
-            }
-        }
+        } 
     }
 
     public Collection getAllProductsInStock() throws SQLException {
@@ -51,43 +46,31 @@ public class ProductsInStockDAO {
             //HibernateUtil.shutdown();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        } 
         return productsInStock;
     }
 
     public void deleteProductInStock(ProductsInStock product) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.delete(product);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        } 
     }
 
     public ProductsInStock getProductInStockById(Long id) throws SQLException {
         Session session = null;
         ProductsInStock product = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             product = (ProductsInStock) session.load(ProductsInStock.class, id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        } 
         return product;
     }
 
@@ -95,7 +78,7 @@ public class ProductsInStockDAO {
         Session session = null;
         List products = new ArrayList<ProductsInStock>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             Long id = buf.getId();
             Query query = session.createQuery(" from ProductsInStock " + " where buffet_id = :id ").setLong("id", id);
@@ -103,11 +86,9 @@ public class ProductsInStockDAO {
             products = (List<ProductsInStock>) query.list();
             session.getTransaction().commit();
 
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+        } 
         return products;
     }
 
@@ -115,7 +96,7 @@ public class ProductsInStockDAO {
         Session session = null;
         List products = new ArrayList<ProductsInStock>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             Long id = pro.getId();
             Query query = session.createQuery(" from ProductsInStock " + " where product_id = :id ").setLong("id", id);
@@ -123,11 +104,9 @@ public class ProductsInStockDAO {
             products = (List<ProductsInStock>) query.list();
             session.getTransaction().commit();
 
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+        } 
         return products;
     }
 }
