@@ -70,7 +70,7 @@ public class UserDAO {
         } 
     }
     
-    public User getBuffetById(Long telegram_id) throws SQLException {
+    public User getUserById(Long telegram_id) throws SQLException {
         Session session = null;
         User user = null;
         try {
