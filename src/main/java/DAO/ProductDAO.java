@@ -33,7 +33,7 @@ public class ProductDAO {
         } 
     }
 
-    public Collection getAllBuffets() throws SQLException {
+    public Collection getAllProducts() throws SQLException {
         Session session = null;
         List products = new ArrayList<Product>();
         try {
