@@ -61,7 +61,9 @@ public class BuffetDatabase {
         Buffet buffet = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            buffet = (Buffet) session.load(Buffet.class, buffet_id);
+            session.beginTransaction();
+            buffet = (Buffet) session.get(Buffet.class, buffet_id);
+            session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } 
