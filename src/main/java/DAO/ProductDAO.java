@@ -12,7 +12,6 @@ import javax.swing.*;
 import org.hibernate.Session;
 import org.hibernate.Query;
 
-import logic.Buffet;
 import logic.Product;
 
 public class ProductDAO {
@@ -63,7 +62,9 @@ public class ProductDAO {
         Product product = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            product = (Product) session.load(Product.class, product_id);
+            session.beginTransaction();
+            product = (Product) session.get(Product.class, product_id);
+            session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } 

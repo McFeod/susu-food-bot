@@ -10,7 +10,6 @@ import util.HibernateUtil;
 import javax.swing.*;
 
 import org.hibernate.Session;
-import org.hibernate.Query;
 import logic.Advice;
 
 public class AdviceDAO {

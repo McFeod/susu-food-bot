@@ -68,7 +68,9 @@ public class ProductsNotInStockDAO {
         ProductsNotInStock product = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            product = (ProductsNotInStock) session.load(ProductsNotInStock.class, id);
+            session.beginTransaction();
+            product = (ProductsNotInStock) session.get(ProductsNotInStock.class, id);
+            session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         } 
