@@ -2,6 +2,8 @@ package api.receive;
 
 import api.exceptions.BotLogicException;
 
+import java.util.List;
+
 public interface IMessageReceiver extends ITelegramBotReceiveListener {
 
     void onMessageError(Long id, String text);
@@ -27,11 +29,17 @@ public interface IMessageReceiver extends ITelegramBotReceiveListener {
 
     void onGetMessages(Long id, String text) throws BotLogicException;
 
-    void onRunOut(Long id, String text) throws BotLogicException;
+    void onRunOut(Long id, String buffet, String product) throws BotLogicException;
 
     //user advices
 
     void onGetAdvices(Long id, String text) throws BotLogicException;
 
     void onAddAdvice(Long id, String text) throws BotLogicException;
+
+    //send messages
+
+    void onSendMessage(Long id, String text);
+
+    void onSendMessage(Long id, String text, List<String> buttons);
 }

@@ -75,7 +75,7 @@ public class UserDAO {
         User user = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            user = (User) session.load(Buffet.class, telegram_id);
+            user = (User) session.load(User.class, telegram_id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
         }  

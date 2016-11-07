@@ -1,5 +1,5 @@
 package logic;
 
 public enum UserState {
-    state1, state2
+    WAITING, ADD_FEED_POINT, COMPLAIN, RUN_OUT_BUFFET, RUN_OUT_PRODUCT, ADD_ADVICE
 }

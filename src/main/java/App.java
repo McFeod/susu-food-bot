@@ -28,7 +28,7 @@ import util.HibernateUtil;
 public class App {
     public static void main(String[] args) {
         UserDAO u = new UserDAO();
-        User us = new User(53,"xren",125,UserState.state1);
+        User us = new User(53,"xren",125,UserState.WAITING);
         
         
         try {

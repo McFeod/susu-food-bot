@@ -1,6 +1,11 @@
 package api;
 
+import DAO.UserDAO;
 import api.receive.ITelegramBotReceiveListener;
+import logic.User;
+import logic.UserState;
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Session;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -10,7 +15,10 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import util.HibernateUtil;
 
+import javax.swing.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +31,8 @@ public class TelegramBotAPI implements ITelegramBotAPI {
     private TelegramLongPollingBot telegramLongPollingBot;
 
     private ITelegramBotReceiveListener receiveListener;
+    private ITelegramBotReceiveListener receiveListenerParam1;
+    private ITelegramBotReceiveListener receiveListenerParam2;
 
     public TelegramBotAPI() {
         telegramBotsApi = new TelegramBotsApi();
@@ -39,9 +49,45 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                 }
 
                 public void onUpdateReceived(Update update) {
-                    if (receiveListener != null && update != null && update.hasMessage())
-                        receiveListener.onMessageReceive(update.getMessage().getChatId(),
-                                update.getMessage().getText());
+                    if (update != null && update.hasMessage()) {
+                        try {
+                            UserDAO db = new UserDAO();
+                            User user;
+                            try {
+                                user = db.getUserById(update.getMessage().getChatId());
+                            } catch (ObjectNotFoundException e) {
+                                user = new User(update.getMessage().getChatId(), "", 0, UserState.WAITING);
+                                db.addUser(user);
+                            }
+
+                            if (user == null) {
+                                user = new User(update.getMessage().getChatId(), "", 0, UserState.WAITING);
+                                db.addUser(user);
+                            }
+
+                            switch (user.getState()) {
+                                case WAITING:
+                                    if (receiveListener != null)
+                                        receiveListener.onMessageReceive(update.getMessage().getChatId(),
+                                                update.getMessage().getText());
+                                    break;
+                                case ADD_FEED_POINT:
+                                case COMPLAIN:
+                                case RUN_OUT_BUFFET:
+                                case ADD_ADVICE:
+                                    if (receiveListenerParam1 != null)
+                                        receiveListenerParam1.onMessageReceive(update.getMessage().getChatId(),
+                                                update.getMessage().getText());
+                                    break;
+                                case RUN_OUT_PRODUCT:
+                                    if (receiveListenerParam2 != null)
+                                        receiveListenerParam2.onMessageReceive(update.getMessage().getChatId(),
+                                                update.getMessage().getText());
+                                    break;
+                            }
+                        } catch (SQLException e) {
+                        }
+                    }
                 }
             };
             telegramBotsApi.registerBot(telegramLongPollingBot);
@@ -52,6 +98,14 @@ public class TelegramBotAPI implements ITelegramBotAPI {
 
     public void setOnReceiveListener(ITelegramBotReceiveListener receiveListener) {
         this.receiveListener = receiveListener;
+    }
+
+    public void setOnReceiveListenerParam1(ITelegramBotReceiveListener receiveListener) {
+        this.receiveListenerParam1 = receiveListener;
+    }
+
+    public void setOnReceiveListenerParam2(ITelegramBotReceiveListener receiveListener) {
+        this.receiveListenerParam2 = receiveListener;
     }
 
     public void sendMessage(Long id, String text) {
