@@ -1,28 +1,9 @@
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
 
-import org.hibernate.Session;
-import DAO.ProductDAO;
-import DAO.BuffetDatabase;
-import DAO.AdviceDAO;
-import DAO.ProductsInStockDAO;
-import DAO.ProductsNotInStockDAO;
 import DAO.UserDAO;
-import api.exceptions.FeedPointDoesNotExists;
-import feedpointevents.FeedPointEventHandler;
-import logic.Product;
-import logic.Advice;
-import logic.Buffet;
-import logic.ProductsInStock;
-import logic.ProductsNotInStock;
 import logic.User;
 import logic.UserState;
-import util.HibernateUtil;
 
 
 public class App {

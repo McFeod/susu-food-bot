@@ -5,14 +5,12 @@ import DAO.BuffetDatabase;
 import DAO.ProductDAO;
 import DAO.UserDAO;
 import api.exceptions.BotLogicException;
-import api.exceptions.DuplicateFeedPointName;
 import logic.Buffet;
 import logic.Product;
 import logic.User;
 import logic.UserState;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 

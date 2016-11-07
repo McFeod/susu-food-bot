@@ -1,12 +1,10 @@
 package api.receive;
 
 import api.ITelegramBotAPI;
-import api.TelegramBotAPI;
 import api.exceptions.*;
 import feedpointevents.FeedPointEventHandler;
 import handlers.AdvicesEventHandler;
 import handlers.MessagesEventHandler;
-import sun.plugin2.message.Message;
 
 import java.util.HashMap;
 import java.util.List;

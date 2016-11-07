@@ -1,12 +1,6 @@
 import api.ITelegramBotAPI;
 import api.TelegramBotAPI;
-import api.exceptions.*;
 import api.receive.*;
-import feedpointevents.FeedPointEventHandler;
-import handlers.AdvicesEventHandler;
-import handlers.MessagesEventHandler;
-
-import java.util.*;
 
 
 public class TelegramBot {

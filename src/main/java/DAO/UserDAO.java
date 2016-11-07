@@ -8,7 +8,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
-import logic.Buffet;
 import logic.User;
 import util.HibernateUtil;
 
