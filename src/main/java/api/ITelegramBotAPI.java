@@ -23,4 +23,8 @@ public interface ITelegramBotAPI {
 
     void setOnReceiveListener(ITelegramBotReceiveListener receiveListener);
 
+    void setOnReceiveListenerParam1(ITelegramBotReceiveListener receiveListener);
+
+    void setOnReceiveListenerParam2(ITelegramBotReceiveListener receiveListener);
+
 }
