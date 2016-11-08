@@ -10,16 +10,18 @@ import api.exceptions.WrongRunOutParams;
 import logic.Buffet;
 import logic.Product;
 import logic.ProductsNotInStock;
+import util.Pair;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class MessagesEventHandler {
 
-    public static HashMap<String, String> getMessages(String buffetName) throws BotLogicException {
-        HashMap<String, String> messages = new HashMap<>();
+    public static List<Pair<String, String>> getMessages(String buffetName) throws BotLogicException {
+        List<Pair<String, String>> messages = new ArrayList<>();
         try {
             ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
             Collection products;
@@ -45,7 +47,7 @@ public class MessagesEventHandler {
             Iterator iterator = products.iterator();
             while (iterator.hasNext()) {
                 ProductsNotInStock productsNotInStock = (ProductsNotInStock) iterator.next();
-                messages.put(productsNotInStock.getBuffet().getName(), productsNotInStock.getProduct().getName());
+                messages.add(new Pair<String, String>(productsNotInStock.getBuffet().getName(), productsNotInStock.getProduct().getName()));
             }
         } catch (FeedPointDoesNotExists e) {
             throw e;

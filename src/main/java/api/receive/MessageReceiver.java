@@ -5,10 +5,9 @@ import api.exceptions.*;
 import feedpointevents.FeedPointEventHandler;
 import handlers.AdvicesEventHandler;
 import handlers.MessagesEventHandler;
+import util.Pair;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MessageReceiver implements IMessageReceiver {
 
@@ -74,13 +73,13 @@ public class MessageReceiver implements IMessageReceiver {
 
     @Override
     public void onGetMessages(Long id, String text) throws BotLogicException {
-        HashMap<String, String> messages = MessagesEventHandler.getMessages(text);
+        List<Pair<String, String>> messages = MessagesEventHandler.getMessages(text);
 
         if (messages.size() == 0)
             throw new EmptyUserMessagesList();
 
         String msg = "Messages:";
-        for (Map.Entry<String, String> entry : messages.entrySet())
+        for (Pair<String, String> entry : messages)
             msg += "\n" + entry.getKey() + " - " + entry.getValue();
         telegramBotAPI.sendMessage(id, msg);
     }
