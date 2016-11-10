@@ -8,8 +8,4 @@ public class Tests {
         Assert.assertEquals(2*2, 4);
     }
 
-    @Test
-    public void testFalse() {
-        Assert.assertEquals(2*2, 5);
-    }
 }
