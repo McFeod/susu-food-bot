@@ -1,4 +1,4 @@
-package feedpointevents;
+package handlers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

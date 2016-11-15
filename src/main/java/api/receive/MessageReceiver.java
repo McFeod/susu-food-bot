@@ -2,8 +2,8 @@ package api.receive;
 
 import api.ITelegramBotAPI;
 import api.exceptions.*;
-import feedpointevents.FeedPointEventHandler;
 import handlers.AdvicesEventHandler;
+import handlers.FeedPointEventHandler;
 import handlers.MessagesEventHandler;
 import util.Pair;
 
