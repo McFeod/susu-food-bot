@@ -22,4 +22,22 @@ public class Tests {
         String joined = StringUtils.join(strings, ", ");
         Assert.assertEquals(joined, "foo, bar, baz");
     }
+
+    @Test
+    public void testStringUtilsIsNullOrEmptyOrWhitespaceOnNull() {
+        String str = null;
+        Assert.assertTrue(StringUtils.isNullOrEmptyOrWhitespace(str));
+    }
+
+    @Test
+    public void testStringUtilsIsNullOrEmptyOrWhitespaceOnEmpty() {
+        String str = "";
+        Assert.assertTrue(StringUtils.isNullOrEmptyOrWhitespace(str));
+    }
+
+    @Test
+    public void testStringUtilsIsNullOrEmptyOrWhitespaceOnWhitespace() {
+        String str = " \t\n";
+        Assert.assertTrue(StringUtils.isNullOrEmptyOrWhitespace(str));
+    }
 }
