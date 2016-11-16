@@ -28,8 +28,9 @@ public class ProductsNotInStockDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<ProductsNotInStock> getAllProductsNotInStock() throws SQLException {
-        Session session = null;
+        Session session;
         Collection<ProductsNotInStock> productsNotInStock = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -68,6 +69,7 @@ public class ProductsNotInStockDAO {
         return product;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<ProductsNotInStock> getProductsNotInStockByBuffet(Buffet buf) throws SQLException {
         Session session;
         Collection<ProductsNotInStock> products = new ArrayList<>();
@@ -85,8 +87,9 @@ public class ProductsNotInStockDAO {
         return products;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<ProductsNotInStock> getProductsInStockByProduct(Product pro) throws SQLException {
-        Session session = null;
+        Session session;
         Collection<ProductsNotInStock> products = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();

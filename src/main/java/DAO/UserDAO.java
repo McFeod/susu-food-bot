@@ -23,6 +23,7 @@ public class UserDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<User> getAllUsers() throws SQLException {
         Session session;
         Collection<User> users = new ArrayList<>();

@@ -28,6 +28,7 @@ public class ProductsInStockDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<ProductsInStock> getAllProductsInStock() throws SQLException {
         Session session;
         Collection<ProductsInStock> productsInStock = new ArrayList<>();
@@ -68,6 +69,7 @@ public class ProductsInStockDAO {
         return product;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<ProductsInStock> getProductsInStockByBuffet(Buffet buf) throws SQLException {
         Session session;
         Collection<ProductsInStock> products = new ArrayList<>();
@@ -85,6 +87,7 @@ public class ProductsInStockDAO {
         return products;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<ProductsInStock> getProductsInStockByProduct(Product pro) throws SQLException {
         Session session;
         Collection<ProductsInStock> products = new ArrayList<>();

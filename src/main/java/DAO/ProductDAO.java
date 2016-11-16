@@ -26,6 +26,7 @@ public class ProductDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Product> getAllProducts() throws SQLException {
         Session session;
         Collection<Product> products = new ArrayList<>();
@@ -66,6 +67,7 @@ public class ProductDAO {
         return product;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Product> getProductsByName(String name) throws SQLException {
         Session session;
         Collection<Product> products = new ArrayList<>();

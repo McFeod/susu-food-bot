@@ -26,6 +26,7 @@ public class BuffetDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Buffet> getAllBuffets() throws SQLException {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
@@ -66,6 +67,7 @@ public class BuffetDAO {
         return buffet;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Buffet> getBuffetsByName(String name) throws SQLException {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
@@ -82,6 +84,7 @@ public class BuffetDAO {
         return buffets;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Buffet> getBuffetsByAdmin(Boolean isAdmin) throws SQLException {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
@@ -98,6 +101,7 @@ public class BuffetDAO {
         return buffets;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Buffet> getBuffetsByComplain(Boolean isComplained) throws SQLException {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
