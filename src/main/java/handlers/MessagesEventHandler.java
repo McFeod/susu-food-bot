@@ -1,6 +1,6 @@
 package handlers;
 
-import DAO.BuffetDatabase;
+import DAO.BuffetDAO;
 import DAO.ProductDAO;
 import DAO.ProductsNotInStockDAO;
 import api.exceptions.BotLogicException;
@@ -30,7 +30,7 @@ public class MessagesEventHandler {
                 products = BDB.getAllProductsNotInStock();
             else {
                 Buffet buffet = null;
-                BuffetDatabase buffetDB = new BuffetDatabase();
+                BuffetDAO buffetDB = new BuffetDAO();
                 Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
                 if (buffetsIterator.hasNext())
                     buffet = (Buffet) buffetsIterator.next();
@@ -65,7 +65,7 @@ public class MessagesEventHandler {
             Buffet buffet = null;
             Product product = null;
 
-            BuffetDatabase buffetDB = new BuffetDatabase();
+            BuffetDAO buffetDB = new BuffetDAO();
             Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
             if (buffetsIterator.hasNext())
                 buffet = (Buffet) buffetsIterator.next();
