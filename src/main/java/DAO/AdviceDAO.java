@@ -24,6 +24,7 @@ public class AdviceDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Advice> getAllAdvices() throws SQLException {
         Session session;
         Collection<Advice> advices = new ArrayList<>();
