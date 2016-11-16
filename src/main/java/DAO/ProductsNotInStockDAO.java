@@ -16,7 +16,7 @@ import logic.Product;
 import logic.ProductsNotInStock;
 
 public class ProductsNotInStockDAO {
-    public void addProductInStock(ProductsNotInStock productNotInStock) throws SQLException {
+    public void addProductNotInStock(ProductsNotInStock productNotInStock) throws SQLException {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
