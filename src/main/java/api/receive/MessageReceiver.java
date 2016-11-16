@@ -6,6 +6,7 @@ import feedpointevents.FeedPointEventHandler;
 import handlers.AdvicesEventHandler;
 import handlers.MessagesEventHandler;
 import util.Pair;
+import util.StringUtils;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class MessageReceiver implements IMessageReceiver {
         List<String> feedPoints = FeedPointEventHandler.getFeedPoints();
         if (feedPoints.size() == 0)
             throw new EmptyFeedPointList();
-        telegramBotAPI.sendMessage(id, "Feed points:\n" + String.join("\n", feedPoints));
+        telegramBotAPI.sendMessage(id, "Feed points:\n" + StringUtils.join(feedPoints, "\n"));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class MessageReceiver implements IMessageReceiver {
         List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
         if (feedPoints.size() == 0)
             throw new EmptyUserFeedPointList();
-        telegramBotAPI.sendMessage(id, "User feed points:\n" + String.join("\n", feedPoints));
+        telegramBotAPI.sendMessage(id, "User feed points:\n" + StringUtils.join(feedPoints, "\n"));
     }
 
     @Override
@@ -94,7 +95,7 @@ public class MessageReceiver implements IMessageReceiver {
         List<String> advices = AdvicesEventHandler.getAdvices();
         if (advices.size() == 0)
             throw new EmptyAdviceList();
-        telegramBotAPI.sendMessage(id, "Advices:\n" + String.join("\n", advices));
+        telegramBotAPI.sendMessage(id, "Advices:\n" + StringUtils.join(advices, "\n"));
     }
 
     @Override
