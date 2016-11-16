@@ -57,9 +57,9 @@ public class FeedPointEventHandler {
             Collection<Buffet> buffets = buffetDAO.getBuffetsByName(name);
             Iterator<Buffet> iterator = buffets.iterator();
             if (iterator.hasNext()) {
-                Buffet buffet = iterator.next();
-                buffet.setIsComplained(true);
-                buffetDAO.updateBuffet(buffet);
+                Buffet buf = iterator.next();
+                buf.setIsComplained(true);
+                buffetDAO.updateBuffet(buf);
             } else {
                 throw new FeedPointDoesNotExists();
             }
