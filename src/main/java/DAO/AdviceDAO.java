@@ -3,7 +3,6 @@ package DAO;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.ArrayList;
-import java.util.List;
 
 import util.HibernateUtil;
 
@@ -13,12 +12,8 @@ import org.hibernate.Session;
 import logic.Advice;
 
 public class AdviceDAO {
-    public AdviceDAO() {
-    }
-
-    
     public void addAdvice(Advice advice) throws SQLException {
-        Session session = null;
+        Session session;
         try {
         	session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
@@ -26,33 +21,26 @@ public class AdviceDAO {
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
-        }// finally {
-           // if (session != null && session.isOpen()) {
-
-            //    session.close();
-           // }
-        //}
+        }
     }
 
-    public Collection getAllAdvices() throws SQLException {
-        Session session = null;
-        List advices = new ArrayList<Advice>();
+    @SuppressWarnings("unchecked")
+    public Collection<Advice> getAllAdvices() throws SQLException {
+        Session session;
+        Collection<Advice> advices = new ArrayList<>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
             advices = session.createCriteria(Advice.class).list();
-            //HibernateUtil.shutdown();
+            session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
         }
         return advices;
     }
 
     public void deleteAdvice(Advice advice) throws SQLException {
-        Session session = null;
+        Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
@@ -60,10 +48,6 @@ public class AdviceDAO {
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
-        } //finally {
-           // if (session != null && session.isOpen()) {
-           //     session.close();
-          //  }
-       // }
+        }
     }
 }

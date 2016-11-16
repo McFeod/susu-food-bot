@@ -3,7 +3,6 @@ package DAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -12,42 +11,35 @@ import logic.User;
 import util.HibernateUtil;
 
 public class UserDAO {
-    public UserDAO() {
-    }
-
     public void addUser(User user) throws SQLException {
-        Session session = null;
+        Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
-            if (session != null && session.isOpen()) {
-
-                session.close();
-            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
         }
-
-           
     }
 
-    public Collection getAllUsers() throws SQLException {
-        Session session = null;
-        List users = new ArrayList<User>();
+    @SuppressWarnings("unchecked")
+    public Collection<User> getAllUsers() throws SQLException {
+        Session session;
+        Collection<User> users = new ArrayList<>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
             users = session.createCriteria(User.class).list();
-            //HibernateUtil.shutdown();
+            session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
-        } 
+        }
         return users;
     }
 
     public void deleteUser(User user) throws SQLException {
-        Session session = null;
+        Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
@@ -55,10 +47,10 @@ public class UserDAO {
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
-        }  
+        }
     }
     public void updateUser(User user) throws SQLException {
-        Session session = null;
+        Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
@@ -66,11 +58,11 @@ public class UserDAO {
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
-        } 
+        }
     }
     
     public User getUserById(Long telegram_id) throws SQLException {
-        Session session = null;
+        Session session;
         User user = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -79,8 +71,7 @@ public class UserDAO {
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
-        }  
+        }
         return user;
     }
-
 }
