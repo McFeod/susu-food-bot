@@ -7,6 +7,7 @@ public class Buffet {
     private String name;
     private Boolean isAdmin;
     private Boolean isComplained;
+    private String place;
 
     public Buffet() {
     }
@@ -26,6 +27,22 @@ public class Buffet {
         this.isComplained = isComplained;
     }
     
+    public Buffet(long id,String name, Boolean isAdmin, Boolean isComplained,String place)
+    {
+        this.id = id;
+        this.name = name;
+        this.isAdmin = isAdmin;
+        this.isComplained = isComplained;
+        this.place = place;
+    }
+    
+    public Buffet(String name, Boolean isAdmin, Boolean isComplained,String place)
+    {
+        this.name = name;
+        this.isAdmin = isAdmin;
+        this.isComplained = isComplained;
+        this.place = place;
+    }
     public void setId(long id) {
         this.id = id;
     }
@@ -56,5 +73,15 @@ public class Buffet {
 
     public Boolean getIsComplained() {
         return isComplained;
+    }
+    
+    public void setPlace(String place)
+    {
+        this.place = place;
+    }
+    
+    public String getPlace()
+    {
+        return place;
     }
 }
