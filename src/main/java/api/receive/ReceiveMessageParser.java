@@ -1,80 +1,53 @@
 package api.receive;
 
+import util.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class ReceiveMessageParser {
-
-    public enum MessageKind {ERROR, START, STOP, HELP,
-        FEED_POINTS, USER_FEED_POINTS, ADD_FEED_POINT, COMPLAIN,
-        MSG_LIST, RUN_OUT,
-        ADVICES, ADD_ADVICE}
-
-    public static class MessageResponse {
-
-        private String text;//текст сообщения, расположенный после команды
-        private MessageKind kind;//тип сообщения
-
-        public MessageResponse(String text, MessageKind kind) {
-            this.text = text;
-            this.kind = kind;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public MessageKind getKind() {
-            return kind;
-        }
+    //словарь, где каждой команде соответствует тип сообщения
+    private static Map<String, MessageKind> commands = new HashMap<>();
+    static {
+        commands.put("/addadvice"     , MessageKind.ADD_ADVICE);
+        commands.put("/addfeedpoint"  , MessageKind.ADD_FEED_POINT);
+        commands.put("/advices"       , MessageKind.ADVICES);
+        commands.put("/complain"      , MessageKind.COMPLAIN);
+        commands.put("/feedpoints"    , MessageKind.FEED_POINTS);
+        commands.put("/help"          , MessageKind.HELP);
+        commands.put("/msglist"       , MessageKind.MSG_LIST);
+        commands.put("/runout"        , MessageKind.RUN_OUT);
+        commands.put("/start"         , MessageKind.START);
+        commands.put("/stop"          , MessageKind.STOP);
+        commands.put("/userfeedpoints", MessageKind.USER_FEED_POINTS);
     }
 
-    //словарь, где каждому типу сообщения соответствует массив команд
-    private static HashMap<MessageKind, String[]> map;
-
     public static MessageResponse getKind(String msg) {
-        init();
-
-        if (msg == null)
+        if (StringUtils.isNullOrEmptyOrWhitespace(msg)) {
             return new MessageResponse("", MessageKind.ERROR);
+        }
 
-        msg = msg.trim();//удаляет пробелы в начале и в конце
+        msg = msg.trim().toLowerCase();
 
-        if (msg.isEmpty())
-            return new MessageResponse("", MessageKind.ERROR);
+        String command;
+        String rest;
 
-        //поиск команды
-        for (Map.Entry<MessageKind, String[]> entry : map.entrySet())
-            for (String str : entry.getValue()) {
-                if (msg.toLowerCase().startsWith(str + " "))
-                    return new MessageResponse(msg.substring(str.length() + 1).trim(), entry.getKey());
-                if (msg.toLowerCase().equals(str))
-                    return new MessageResponse("", entry.getKey());
-            }
+        // разбиваем сообщение на команду и аргументы
+        int spaceIndex = msg.indexOf(' ');
+        if (spaceIndex == -1) {
+            command = msg;
+            rest = "";
+        } else {
+            command = msg.substring(0, spaceIndex);
+            rest = msg.substring(spaceIndex + 1);
+        }
+
+        // поиск команды
+        if (commands.containsKey(command)) {
+            return new MessageResponse(rest, commands.get(command));
+        }
 
         //если не нашли, то возвращается ошибка
         return new MessageResponse("", MessageKind.ERROR);
     }
-
-    //заполняет словарь значениями
-    private static void init() {
-        if (map == null) {
-            map = new HashMap<>();
-            map.put(MessageKind.START, new String[] {"/start"});
-            map.put(MessageKind.STOP, new String[] {"/stop"});
-            map.put(MessageKind.HELP, new String[] {"/help"});
-
-            map.put(MessageKind.FEED_POINTS, new String[] {"/feedpoints"});
-            map.put(MessageKind.USER_FEED_POINTS, new String[] {"/userfeedpoints"});
-            map.put(MessageKind.ADD_FEED_POINT, new String[] {"/addfeedpoint"});
-            map.put(MessageKind.COMPLAIN, new String[] {"/complain"});
-
-            map.put(MessageKind.MSG_LIST, new String[] {"/msglist"});
-            map.put(MessageKind.RUN_OUT, new String[] {"/runout"});
-
-            map.put(MessageKind.ADVICES, new String[] {"/advices"});
-            map.put(MessageKind.ADD_ADVICE, new String[] {"/addadvice"});
-        }
-    }
-
 }

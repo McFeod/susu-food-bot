@@ -31,7 +31,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
             return;
         }
 
-        ReceiveMessageParser.MessageResponse response = ReceiveMessageParser.getKind(message);
+        MessageResponse response = ReceiveMessageParser.getKind(message);
         System.out.println(response.getKind()+" '"+response.getText()+"'");
         try {
             switch (response.getKind()) {
