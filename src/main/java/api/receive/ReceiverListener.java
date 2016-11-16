@@ -1,7 +1,7 @@
 package api.receive;
 
 
-import DAO.BuffetDatabase;
+import DAO.BuffetDAO;
 import DAO.ProductDAO;
 import DAO.UserDAO;
 import api.exceptions.BotLogicException;
@@ -31,7 +31,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
             return;
         }
 
-        ReceiveMessageParser.MessageResponse response = ReceiveMessageParser.getKind(message);
+        MessageResponse response = ReceiveMessageParser.getKind(message);
         System.out.println(response.getKind()+" '"+response.getText()+"'");
         try {
             switch (response.getKind()) {
@@ -72,7 +72,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         user.setState(UserState.COMPLAIN);
                         db.updateUser(user);
 
-                        BuffetDatabase buffetDB = new BuffetDatabase();
+                        BuffetDAO buffetDB = new BuffetDAO();
                         Collection<Buffet> buffets = buffetDB.getAllBuffets();
                         List<String> buttons = new LinkedList<>();
                         for (Buffet buffet : buffets)
@@ -93,7 +93,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         user.setState(UserState.RUN_OUT_BUFFET);
                         db.updateUser(user);
 
-                        BuffetDatabase buffetDB = new BuffetDatabase();
+                        BuffetDAO buffetDB = new BuffetDAO();
                         Collection<Buffet> buffets = buffetDB.getAllBuffets();
                         List<String> buttons = new LinkedList<>();
                         for (Buffet buffet : buffets)

@@ -1,6 +1,6 @@
 package handlers;
 
-import DAO.BuffetDatabase;
+import DAO.BuffetDAO;
 import DAO.ProductDAO;
 import DAO.ProductsNotInStockDAO;
 import api.exceptions.BotLogicException;
@@ -19,35 +19,32 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MessagesEventHandler {
-
     public static List<Pair<String, String>> getMessages(String buffetName) throws BotLogicException {
         List<Pair<String, String>> messages = new ArrayList<>();
         try {
-            ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
-            Collection products;
+            ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
+            Collection<ProductsNotInStock> products;
 
             if (buffetName == null || buffetName.isEmpty())
-                products = BDB.getAllProductsNotInStock();
+                products = productsNotInStockDAO.getAllProductsNotInStock();
             else {
                 Buffet buffet = null;
-                BuffetDatabase buffetDB = new BuffetDatabase();
-                Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
+                BuffetDAO buffetDAO = new BuffetDAO();
+                Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
                 if (buffetsIterator.hasNext())
-                    buffet = (Buffet) buffetsIterator.next();
+                    buffet = buffetsIterator.next();
 
                 if (buffet == null)
                     throw new FeedPointDoesNotExists();
 
-                products = BDB.getProductsNotInStockByBuffet(buffet);
+                products = productsNotInStockDAO.getProductsNotInStockByBuffet(buffet);
             }
 
             if (products == null)
                 throw new FeedPointDoesNotExists();
 
-            Iterator iterator = products.iterator();
-            while (iterator.hasNext()) {
-                ProductsNotInStock productsNotInStock = (ProductsNotInStock) iterator.next();
-                messages.add(new Pair<String, String>(productsNotInStock.getBuffet().getName(), productsNotInStock.getProduct().getName()));
+            for (ProductsNotInStock product : products) {
+                messages.add(new Pair<>(product.getBuffet().getName(), product.getProduct().getName()));
             }
         } catch (FeedPointDoesNotExists e) {
             throw e;
@@ -59,26 +56,26 @@ public class MessagesEventHandler {
 
     public static void runOut(String buffetName, String productName) throws BotLogicException {
         try {
-            ProductsNotInStockDAO BDB = new ProductsNotInStockDAO();
+            ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
             ProductsNotInStock productNotInStock = new ProductsNotInStock();
 
             Buffet buffet = null;
             Product product = null;
 
-            BuffetDatabase buffetDB = new BuffetDatabase();
-            Iterator buffetsIterator = buffetDB.getBuffetsByName(buffetName).iterator();
+            BuffetDAO buffetDAO = new BuffetDAO();
+            Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
             if (buffetsIterator.hasNext())
-                buffet = (Buffet) buffetsIterator.next();
+                buffet = buffetsIterator.next();
 
-            ProductDAO productDB = new ProductDAO();
-            Iterator productsIterator = productDB.getProductsByName(productName).iterator();
+            ProductDAO productDAO = new ProductDAO();
+            Iterator<Product> productsIterator = productDAO.getProductsByName(productName).iterator();
             if (productsIterator.hasNext())
-                product = (Product) productsIterator.next();
+                product = productsIterator.next();
 
             if (product == null) {
                 product = new Product();
                 product.setName(productName);
-                productDB.addProduct(product);
+                productDAO.addProduct(product);
             }
 
             if (buffet == null)
@@ -87,7 +84,7 @@ public class MessagesEventHandler {
             productNotInStock.setBuffet(buffet);
             productNotInStock.setProduct(product);
 
-            BDB.addProductInStock(productNotInStock);
+            productsNotInStockDAO.addProductNotInStock(productNotInStock);
         } catch (WrongRunOutParams e) {
             throw e;
         } catch (SQLException e) {

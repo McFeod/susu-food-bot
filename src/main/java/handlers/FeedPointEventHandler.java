@@ -5,20 +5,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import DAO.BuffetDatabase;
+import DAO.BuffetDAO;
 import api.exceptions.FeedPointDoesNotExists;
 import logic.Buffet;
 
 public class FeedPointEventHandler {
     public static ArrayList<String> getFeedPoints() {
-        ArrayList<String> feedPoints = new ArrayList<String>();
+        ArrayList<String> feedPoints = new ArrayList<>();
         try {
-            BuffetDatabase BDB = new BuffetDatabase();
-            Collection buffets = BDB.getBuffetsByAdmin(true);
-            Iterator iterator = buffets.iterator();
-            while (iterator.hasNext()) {
-                Buffet buf = (Buffet) iterator.next();
-                feedPoints.add(buf.getName());
+            BuffetDAO buffetDAO = new BuffetDAO();
+            Collection<Buffet> buffets = buffetDAO.getBuffetsByAdmin(true);
+            for (Buffet buffet : buffets) {
+                feedPoints.add(buffet.getName());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -27,14 +25,12 @@ public class FeedPointEventHandler {
     }
 
     public static ArrayList<String> getUserFeedPoints() {
-        ArrayList<String> feedPoints = new ArrayList<String>();
+        ArrayList<String> feedPoints = new ArrayList<>();
         try {
-            BuffetDatabase BDB = new BuffetDatabase();
-            Collection buffets = BDB.getBuffetsByAdmin(false);
-            Iterator iterator = buffets.iterator();
-            while (iterator.hasNext()) {
-                Buffet buf = (Buffet) iterator.next();
-                feedPoints.add(buf.getName());
+            BuffetDAO buffetDAO = new BuffetDAO();
+            Collection<Buffet> buffets = buffetDAO.getBuffetsByAdmin(false);
+            for (Buffet buffet : buffets) {
+                feedPoints.add(buffet.getName());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,33 +39,32 @@ public class FeedPointEventHandler {
     }
 
     public static void addFeedPoint(String name) {
-        BuffetDatabase BDB = new BuffetDatabase();
-        Buffet buf = new Buffet();
-        buf.setIsAdmin(false);
-        buf.setIsComplained(false);
-        buf.setName(name);
+        BuffetDAO buffetDAO = new BuffetDAO();
+        Buffet buffet = new Buffet();
+        buffet.setIsAdmin(false);
+        buffet.setIsComplained(false);
+        buffet.setName(name);
         try {
-            BDB.addBuffet(buf);
+            buffetDAO.addBuffet(buffet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void complainFeedPoint(String name) throws FeedPointDoesNotExists {
-        BuffetDatabase BDB = new BuffetDatabase();
+        BuffetDAO buffetDAO = new BuffetDAO();
         try {
-            Collection buffets = BDB.getBuffetsByName(name);
-            Iterator iterator = buffets.iterator();
+            Collection<Buffet> buffets = buffetDAO.getBuffetsByName(name);
+            Iterator<Buffet> iterator = buffets.iterator();
             if (iterator.hasNext()) {
-                Buffet buf = (Buffet) iterator.next();
+                Buffet buf = iterator.next();
                 buf.setIsComplained(true);
-                BDB.updateBuffet(buf);
+                buffetDAO.updateBuffet(buf);
             } else {
                 throw new FeedPointDoesNotExists();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }
