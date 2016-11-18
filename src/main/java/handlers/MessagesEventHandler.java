@@ -23,13 +23,13 @@ public class MessagesEventHandler {
     public static List<Pair<String, String>> getMessages(String buffetName) throws BotLogicException {
         List<Pair<String, String>> messages = new ArrayList<>();
         try {
-            ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
+            ProductsNotInStockDAO productsNotInStockDAO = ProductsNotInStockDAO.getInstance();
             Collection<ProductNotInStock> products;
 
             if (StringUtils.isNullOrEmpty(buffetName)) {
                 products = productsNotInStockDAO.getAllProductsNotInStock();
             } else {
-                BuffetDAO buffetDAO = new BuffetDAO();
+                BuffetDAO buffetDAO = BuffetDAO.getInstance();
                 Buffet buffet;
                 Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
                 if (buffetsIterator.hasNext()) {
@@ -55,10 +55,10 @@ public class MessagesEventHandler {
 
     public static void runOut(String buffetName, String productName) throws BotLogicException {
         try {
-            ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
+            ProductsNotInStockDAO productsNotInStockDAO = ProductsNotInStockDAO.getInstance();
             ProductNotInStock productNotInStock = new ProductNotInStock();
 
-            BuffetDAO buffetDAO = new BuffetDAO();
+            BuffetDAO buffetDAO = BuffetDAO.getInstance();
             Buffet buffet;
             Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
             if (buffetsIterator.hasNext()) {
@@ -67,7 +67,7 @@ public class MessagesEventHandler {
                 throw new WrongRunOutParams();
             }
 
-            ProductDAO productDAO = new ProductDAO();
+            ProductDAO productDAO = ProductDAO.getInstance();
             Product product = null;
             Iterator<Product> productsIterator = productDAO.getProductsByName(productName).iterator();
             if (productsIterator.hasNext()) {

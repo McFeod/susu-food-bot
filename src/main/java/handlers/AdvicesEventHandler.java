@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class AdvicesEventHandler {
-
     public static ArrayList<String> getAdvices() {
         ArrayList<String> messages = new ArrayList<>();
         try {
-            AdviceDAO adviceDAO = new AdviceDAO();
+            AdviceDAO adviceDAO = AdviceDAO.getInstance();
             Collection<Advice> advices = adviceDAO.getAllAdvices();
             for (Advice advice : advices) {
                 messages.add(advice.getText());
@@ -24,7 +23,7 @@ public class AdvicesEventHandler {
     }
 
     public static void addAdvice(String text) {
-        AdviceDAO adviceDAO = new AdviceDAO();
+        AdviceDAO adviceDAO = AdviceDAO.getInstance();
         Advice advice = new Advice();
         advice.setText(text);
         try {

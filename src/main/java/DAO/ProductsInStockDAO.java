@@ -1,21 +1,28 @@
 package DAO;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.ArrayList;
-
+import org.hibernate.Query;
+import org.hibernate.Session;
+import pojos.Buffet;
+import pojos.Product;
 import pojos.ProductInStock;
 import util.HibernateUtil;
 
 import javax.swing.*;
-
-import org.hibernate.Session;
-import org.hibernate.Query;
-
-import pojos.Buffet;
-import pojos.Product;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ProductsInStockDAO {
+
+    private static final ProductsInStockDAO instance = new ProductsInStockDAO();
+
+    public static ProductsInStockDAO getInstance() {
+        return instance;
+    }
+
+    private ProductsInStockDAO() {
+    }
+
     public void addProductInStock(ProductInStock productInStock) throws SQLException {
         Session session;
         try {

@@ -5,7 +5,6 @@ import api.receive.ITelegramBotReceiveListener;
 import java.util.List;
 
 public interface ITelegramBotAPI {
-
     /**
      * отправить сообщение
      * @param id идентификатор чата

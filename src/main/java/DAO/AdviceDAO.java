@@ -1,17 +1,25 @@
 package DAO;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.ArrayList;
-
+import org.hibernate.Session;
+import pojos.Advice;
 import util.HibernateUtil;
 
 import javax.swing.*;
-
-import org.hibernate.Session;
-import pojos.Advice;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class AdviceDAO {
+
+    private static final AdviceDAO instance = new AdviceDAO();
+
+    public static AdviceDAO getInstance() {
+        return instance;
+    }
+
+    private AdviceDAO() {
+    }
+
     public void addAdvice(Advice advice) throws SQLException {
         Session session;
         try {

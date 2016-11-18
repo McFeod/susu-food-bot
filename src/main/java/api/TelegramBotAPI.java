@@ -48,7 +48,7 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                 public void onUpdateReceived(Update update) {
                     if ((update != null) && update.hasMessage()) {
                         try {
-                            UserDAO userDAO = new UserDAO();
+                            UserDAO userDAO = UserDAO.getInstance();
                             User user;
                             try {
                                 user = userDAO.getUserById(update.getMessage().getChatId());

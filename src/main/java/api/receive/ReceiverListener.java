@@ -58,7 +58,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     break;
                 case ADD_FEED_POINT:
                     if (StringUtils.isNullOrEmpty(response.getText())) {
-                        UserDAO userDAO = new UserDAO();
+                        UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_FEED_POINT);
                         userDAO.updateUser(user);
@@ -69,12 +69,12 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     break;
                 case COMPLAIN:
                     if (StringUtils.isNullOrEmpty(response.getText())) {
-                        UserDAO userDAO = new UserDAO();
+                        UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.COMPLAIN);
                         userDAO.updateUser(user);
 
-                        BuffetDAO buffetDAO = new BuffetDAO();
+                        BuffetDAO buffetDAO = BuffetDAO.getInstance();
                         Collection<Buffet> buffets = buffetDAO.getAllBuffets();
                         List<String> buttons = new LinkedList<>();
                         for (Buffet buffet : buffets) {
@@ -92,12 +92,12 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     break;
                 case RUN_OUT:
                     if (StringUtils.isNullOrEmpty(response.getText())) {
-                        UserDAO userDAO = new UserDAO();
+                        UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_BUFFET);
                         userDAO.updateUser(user);
 
-                        BuffetDAO buffetDAO = new BuffetDAO();
+                        BuffetDAO buffetDAO = BuffetDAO.getInstance();
                         Collection<Buffet> buffets = buffetDAO.getAllBuffets();
                         List<String> buttons = new LinkedList<>();
                         for (Buffet buffet : buffets) {
@@ -106,13 +106,13 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
 
                         messageReceiver.onSendMessage(id, "Введите название", buttons);
                     } else {
-                        UserDAO userDAO = new UserDAO();
+                        UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_PRODUCT);
                         user.setArgument(response.getText());
                         userDAO.updateUser(user);
 
-                        ProductDAO productDAO = new ProductDAO();
+                        ProductDAO productDAO = ProductDAO.getInstance();
                         Collection<Product> products = productDAO.getAllProducts();
                         List<String> buttons = new LinkedList<>();
                         for (Product product : products) {
@@ -128,7 +128,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     break;
                 case ADD_ADVICE:
                     if (StringUtils.isNullOrEmpty(response.getText())) {
-                        UserDAO userDAO = new UserDAO();
+                        UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_ADVICE);
                         userDAO.updateUser(user);
