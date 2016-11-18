@@ -13,7 +13,7 @@ public class FeedPointEventHandler {
     public static ArrayList<String> getFeedPoints() {
         ArrayList<String> feedPoints = new ArrayList<>();
         try {
-            BuffetDAO buffetDAO = new BuffetDAO();
+            BuffetDAO buffetDAO = BuffetDAO.getInstance();
             Collection<Buffet> buffets = buffetDAO.getBuffetsByAdmin(true);
             for (Buffet buffet : buffets) {
                 feedPoints.add(buffet.getName());
@@ -27,7 +27,7 @@ public class FeedPointEventHandler {
     public static ArrayList<String> getUserFeedPoints() {
         ArrayList<String> feedPoints = new ArrayList<>();
         try {
-            BuffetDAO buffetDAO = new BuffetDAO();
+            BuffetDAO buffetDAO = BuffetDAO.getInstance();
             Collection<Buffet> buffets = buffetDAO.getBuffetsByAdmin(false);
             for (Buffet buffet : buffets) {
                 feedPoints.add(buffet.getName());
@@ -39,7 +39,7 @@ public class FeedPointEventHandler {
     }
 
     public static void addFeedPoint(String name) {
-        BuffetDAO buffetDAO = new BuffetDAO();
+        BuffetDAO buffetDAO = BuffetDAO.getInstance();
         Buffet buffet = new Buffet();
         buffet.setIsAdmin(false);
         buffet.setIsComplained(false);
@@ -52,7 +52,7 @@ public class FeedPointEventHandler {
     }
 
     public static void complainFeedPoint(String name) throws FeedPointDoesNotExists {
-        BuffetDAO buffetDAO = new BuffetDAO();
+        BuffetDAO buffetDAO = BuffetDAO.getInstance();
         try {
             Collection<Buffet> buffets = buffetDAO.getBuffetsByName(name);
             Iterator<Buffet> iterator = buffets.iterator();

@@ -28,7 +28,7 @@ public class ReceiverListenerParam2 implements ITelegramBotReceiveListener {
         }
 
         try {
-            UserDAO userDAO = new UserDAO();
+            UserDAO userDAO = UserDAO.getInstance();
             User user = userDAO.getUserById(id);
 
             switch (user.getState()) {

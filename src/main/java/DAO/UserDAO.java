@@ -1,16 +1,25 @@
 package DAO;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JOptionPane;
-
 import org.hibernate.Session;
 import pojos.User;
 import util.HibernateUtil;
 
+import javax.swing.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class UserDAO {
+
+    private static final UserDAO instance = new UserDAO();
+
+    public static UserDAO getInstance() {
+        return instance;
+    }
+
+    private UserDAO() {
+    }
+
     public void addUser(User user) throws SQLException {
         Session session;
         try {
