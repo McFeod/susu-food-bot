@@ -1,13 +1,13 @@
 package handlers;
 
+import DAO.BuffetDAO;
+import api.exceptions.FeedPointDoesNotExists;
+import pojos.Buffet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
-import DAO.BuffetDAO;
-import api.exceptions.FeedPointDoesNotExists;
-import pojos.Buffet;
 
 public class FeedPointEventHandler {
     public static ArrayList<String> getFeedPoints() {

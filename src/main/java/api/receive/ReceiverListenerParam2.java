@@ -5,6 +5,7 @@ import DAO.UserDAO;
 import api.exceptions.BotLogicException;
 import pojos.User;
 import pojos.UserState;
+import util.StringUtils;
 
 import java.sql.SQLException;
 
@@ -17,22 +18,23 @@ public class ReceiverListenerParam2 implements ITelegramBotReceiveListener {
     }
 
     public void onMessageReceive(Long id, String message) {
-        if (messageReceiver == null)
+        if (messageReceiver == null) {
             return;
+        }
 
-        if (message == null || message.isEmpty()) {
+        if (StringUtils.isNullOrEmpty(message)) {
             messageReceiver.onMessageError(id, "");
             return;
         }
 
         try {
-            UserDAO db = new UserDAO();
-            User user = db.getUserById(id);
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.getUserById(id);
 
             switch (user.getState()) {
                 case RUN_OUT_PRODUCT:
                     user.setState(UserState.WAITING);
-                    db.updateUser(user);
+                    userDAO.updateUser(user);
                     String buffet = user.getArgument();
                     messageReceiver.onRunOut(id, buffet, message);
                     break;

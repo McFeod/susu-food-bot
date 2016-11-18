@@ -1,6 +1,5 @@
 package api.receive;
 
-
 import DAO.BuffetDAO;
 import DAO.ProductDAO;
 import DAO.UserDAO;
@@ -9,6 +8,7 @@ import pojos.Buffet;
 import pojos.Product;
 import pojos.User;
 import pojos.UserState;
+import util.StringUtils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -23,16 +23,17 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
     }
 
     public void onMessageReceive(Long id, String message) {
-        if (messageReceiver == null)
+        if (messageReceiver == null) {
             return;
+        }
 
-        if (message == null || message.isEmpty()) {
+        if (StringUtils.isNullOrEmpty(message)) {
             messageReceiver.onMessageError(id, "");
             return;
         }
 
         MessageResponse response = ReceiveMessageParser.getKind(message);
-        System.out.println(response.getKind()+" '"+response.getText()+"'");
+        System.out.println(response.getKind() + " \"" + response.getText() + "\"");
         try {
             switch (response.getKind()) {
                 case ERROR:
@@ -56,62 +57,67 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     messageReceiver.onGetUserFeedPoints(id);
                     break;
                 case ADD_FEED_POINT:
-                    if (response.getText() == null || response.getText().isEmpty()) {
-                        UserDAO db = new UserDAO();
-                        User user = db.getUserById(id);
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                        UserDAO userDAO = new UserDAO();
+                        User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_FEED_POINT);
-                        db.updateUser(user);
+                        userDAO.updateUser(user);
                         messageReceiver.onSendMessage(id, "Введите название");
-                    } else
+                    } else {
                         messageReceiver.onAddFeedPoint(id, response.getText());
+                    }
                     break;
                 case COMPLAIN:
-                    if (response.getText() == null || response.getText().isEmpty()) {
-                        UserDAO db = new UserDAO();
-                        User user = db.getUserById(id);
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                        UserDAO userDAO = new UserDAO();
+                        User user = userDAO.getUserById(id);
                         user.setState(UserState.COMPLAIN);
-                        db.updateUser(user);
+                        userDAO.updateUser(user);
 
-                        BuffetDAO buffetDB = new BuffetDAO();
-                        Collection<Buffet> buffets = buffetDB.getAllBuffets();
+                        BuffetDAO buffetDAO = new BuffetDAO();
+                        Collection<Buffet> buffets = buffetDAO.getAllBuffets();
                         List<String> buttons = new LinkedList<>();
-                        for (Buffet buffet : buffets)
+                        for (Buffet buffet : buffets) {
                             buttons.add(buffet.getName());
+                        }
 
                         messageReceiver.onSendMessage(id, "Введите название", buttons);
-                    } else
+                    } else {
                         messageReceiver.onComplainFeedPoint(id, response.getText());
+                    }
                     break;
 
                 case MSG_LIST:
                     messageReceiver.onGetMessages(id, response.getText());
                     break;
                 case RUN_OUT:
-                    if (response.getText() == null || response.getText().isEmpty()) {
-                        UserDAO db = new UserDAO();
-                        User user = db.getUserById(id);
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                        UserDAO userDAO = new UserDAO();
+                        User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_BUFFET);
-                        db.updateUser(user);
+                        userDAO.updateUser(user);
 
-                        BuffetDAO buffetDB = new BuffetDAO();
-                        Collection<Buffet> buffets = buffetDB.getAllBuffets();
+                        BuffetDAO buffetDAO = new BuffetDAO();
+                        Collection<Buffet> buffets = buffetDAO.getAllBuffets();
                         List<String> buttons = new LinkedList<>();
-                        for (Buffet buffet : buffets)
+                        for (Buffet buffet : buffets) {
                             buttons.add(buffet.getName());
+                        }
 
                         messageReceiver.onSendMessage(id, "Введите название", buttons);
                     } else {
-                        UserDAO db = new UserDAO();
-                        User user = db.getUserById(id);
+                        UserDAO userDAO = new UserDAO();
+                        User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_PRODUCT);
                         user.setArgument(response.getText());
-                        db.updateUser(user);
+                        userDAO.updateUser(user);
 
-                        ProductDAO productDB = new ProductDAO();
-                        Collection<Product> products = productDB.getAllProducts();
+                        ProductDAO productDAO = new ProductDAO();
+                        Collection<Product> products = productDAO.getAllProducts();
                         List<String> buttons = new LinkedList<>();
-                        for (Product product : products)
+                        for (Product product : products) {
                             buttons.add(product.getName());
+                        }
 
                         messageReceiver.onSendMessage(id, "Введите название", buttons);
                     }
@@ -121,14 +127,15 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     messageReceiver.onGetAdvices(id, response.getText());
                     break;
                 case ADD_ADVICE:
-                    if (response.getText() == null || response.getText().isEmpty()) {
-                        UserDAO db = new UserDAO();
-                        User user = db.getUserById(id);
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                        UserDAO userDAO = new UserDAO();
+                        User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_ADVICE);
-                        db.updateUser(user);
+                        userDAO.updateUser(user);
                         messageReceiver.onSendMessage(id, "Введите текст");
-                    } else
+                    } else {
                         messageReceiver.onAddAdvice(id, response.getText());
+                    }
                     break;
             }
         }
@@ -136,7 +143,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
             messageReceiver.onMessageError(id, e.getMessage());
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
             messageReceiver.onMessageError(id, "Something unexpected");
         }
     }

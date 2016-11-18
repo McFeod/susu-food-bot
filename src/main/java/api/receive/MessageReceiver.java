@@ -20,22 +20,21 @@ public class MessageReceiver implements IMessageReceiver {
 
     @Override
     public void onMessageError(Long id, String text) {
-        telegramBotAPI.sendMessage(id, "Error: " + text);
+        telegramBotAPI.sendMessage(id, "Error:\n" + text);
     }
 
     @Override
     public void onStart(Long id) {
-
     }
 
     @Override
-    public void onStop(Long id) throws BotLogicException {
-
+    public void onStop(Long id) {
     }
 
     @Override
     public void onHelp(Long id) throws BotLogicException {
-        telegramBotAPI.sendMessage(id, "/help - Список команд для бота\n" +
+        telegramBotAPI.sendMessage(id,
+                "/help - Список команд для бота\n" +
                 "/feedpoints - Где можно поесть\n" +
                 "/userfeedpoints - Где можно поесть (от пользователей)\n" +
                 "/addfeedpoint <текст> - расскажите, где можно поесть. В тексте после команды  кратко опишите, что это и где находится.\n" +
@@ -49,16 +48,18 @@ public class MessageReceiver implements IMessageReceiver {
     @Override
     public void onGetFeedPoints(Long id) throws BotLogicException {
         List<String> feedPoints = FeedPointEventHandler.getFeedPoints();
-        if (feedPoints.size() == 0)
+        if (feedPoints.size() == 0) {
             throw new EmptyFeedPointList();
+        }
         telegramBotAPI.sendMessage(id, "Feed points:\n" + StringUtils.join(feedPoints, "\n"));
     }
 
     @Override
     public void onGetUserFeedPoints(Long id) throws BotLogicException {
         List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
-        if (feedPoints.size() == 0)
+        if (feedPoints.size() == 0) {
             throw new EmptyUserFeedPointList();
+        }
         telegramBotAPI.sendMessage(id, "User feed points:\n" + StringUtils.join(feedPoints, "\n"));
     }
 
@@ -76,13 +77,15 @@ public class MessageReceiver implements IMessageReceiver {
     public void onGetMessages(Long id, String text) throws BotLogicException {
         List<Pair<String, String>> messages = MessagesEventHandler.getMessages(text);
 
-        if (messages.size() == 0)
+        if (messages.size() == 0) {
             throw new EmptyUserMessagesList();
+        }
 
-        String msg = "Messages:";
-        for (Pair<String, String> entry : messages)
-            msg += "\n" + entry.getKey() + " - " + entry.getValue();
-        telegramBotAPI.sendMessage(id, msg);
+        String message = "Messages:";
+        for (Pair<String, String> entry : messages) {
+            message += "\n" + entry.getKey() + " - " + entry.getValue();
+        }
+        telegramBotAPI.sendMessage(id, message);
     }
 
     @Override
@@ -93,19 +96,15 @@ public class MessageReceiver implements IMessageReceiver {
     @Override
     public void onGetAdvices(Long id, String text) throws BotLogicException {
         List<String> advices = AdvicesEventHandler.getAdvices();
-        if (advices.size() == 0)
+        if (advices.size() == 0) {
             throw new EmptyAdviceList();
+        }
         telegramBotAPI.sendMessage(id, "Advices:\n" + StringUtils.join(advices, "\n"));
     }
 
     @Override
     public void onAddAdvice(Long id, String text) throws BotLogicException {
         AdvicesEventHandler.addAdvice(text);
-    }
-
-    @Override
-    public void onMessageReceive(Long id, String message) {
-
     }
 
     @Override
@@ -118,4 +117,8 @@ public class MessageReceiver implements IMessageReceiver {
         telegramBotAPI.sendMessage(id, text, buttons);
     }
 
+    // нужен ли этот метод?
+    @Override
+    public void onMessageReceive(Long id, String message) {
+    }
 }

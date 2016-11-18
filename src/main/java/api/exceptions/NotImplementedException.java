@@ -6,4 +6,3 @@ public class NotImplementedException extends BotLogicException {
         return "Команда пока не реализована. Но скоро будет!";
     }
 }
-

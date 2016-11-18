@@ -11,22 +11,28 @@ public class User implements Serializable {
 
     private String argument;
 
-    private int rating;
+    @Column(columnDefinition = "int default 0")
+    private Integer rating = 0;
 
-    @Enumerated(EnumType.STRING)
-    private UserState state;
+    @Column(columnDefinition = "int default 0")
+    @Enumerated(EnumType.ORDINAL)
+    private UserState state = UserState.WAITING;
 
-    public User(Long id, String argument, int rating, UserState state) {
+    public User(Long id, String argument, Integer rating, UserState state) {
         this.id       = id;
         this.argument = argument;
         this.rating   = rating;
         this.state    = state;
     }
 
-    public User(String argument, int rating, UserState state) {
+    public User(String argument, Integer rating, UserState state) {
         this.argument = argument;
         this.rating   = rating;
         this.state    = state;
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     public User() {
@@ -48,11 +54,11 @@ public class User implements Serializable {
         this.argument = argument;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return this.rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

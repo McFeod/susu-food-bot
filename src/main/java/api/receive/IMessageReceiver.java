@@ -8,14 +8,13 @@ public interface IMessageReceiver extends ITelegramBotReceiveListener {
 
     void onMessageError(Long id, String text);
 
-
     void onStart(Long id);
 
-    void onStop(Long id) throws BotLogicException;
+    void onStop(Long id);
 
     void onHelp(Long id) throws BotLogicException;
 
-    //feed points
+    // feed points
 
     void onGetFeedPoints(Long id) throws BotLogicException;
 
@@ -25,19 +24,19 @@ public interface IMessageReceiver extends ITelegramBotReceiveListener {
 
     void onComplainFeedPoint(Long id, String text) throws BotLogicException;
 
-    //user messages
+    // user messages
 
     void onGetMessages(Long id, String text) throws BotLogicException;
 
     void onRunOut(Long id, String buffet, String product) throws BotLogicException;
 
-    //user advices
+    // user advices
 
     void onGetAdvices(Long id, String text) throws BotLogicException;
 
     void onAddAdvice(Long id, String text) throws BotLogicException;
 
-    //send messages
+    // send messages
 
     void onSendMessage(Long id, String text);
 

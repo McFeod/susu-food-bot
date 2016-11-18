@@ -2,14 +2,13 @@ import api.ITelegramBotAPI;
 import api.TelegramBotAPI;
 import api.receive.*;
 
-
 public class TelegramBot {
 
     public static void main(String[] args) {
-        new TelegramBot();
+        TelegramBot.start();
     }
 
-    public TelegramBot() {
+    private static void start() {
         ITelegramBotAPI telegramBotAPI = new TelegramBotAPI();
         IMessageReceiver messageReceiver = new MessageReceiver(telegramBotAPI);
 
@@ -21,5 +20,4 @@ public class TelegramBot {
         telegramBotAPI.setOnReceiveListenerParam1(receiveListenerParam1);
         telegramBotAPI.setOnReceiveListenerParam2(receiveListenerParam2);
     }
-
 }

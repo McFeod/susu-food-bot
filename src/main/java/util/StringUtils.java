@@ -26,13 +26,23 @@ public class StringUtils {
     }
 
     /**
+     * проверяет, является ли строка null или пустой
+     * @param str строка
+     * @return является ли строка null или пустой
+     */
+    public static boolean isNullOrEmpty(String str) {
+        return ((str == null) || str.isEmpty());
+    }
+
+    /**
      * проверяет, является ли строка null, пустой или состоит из пробельных символов
      * @param str строка
      * @return является ли строка null, пустой или состоит из пробельных символов
      */
-    public static boolean isNullOrEmptyOrWhitespace(String str) {
-        if (str == null) return true;
-        if (str.isEmpty()) return true;
+    public static boolean isNullOrWhitespace(String str) {
+        if (str == null) {
+            return true;
+        }
         for (int i = 0; i < str.length(); ++i) {
             if (str.charAt(i) > '\u0020') {
                 return false;
