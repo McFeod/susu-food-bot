@@ -1,19 +1,26 @@
 package DAO;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.ArrayList;
-
+import org.hibernate.Query;
+import org.hibernate.Session;
+import pojos.Buffet;
 import util.HibernateUtil;
 
 import javax.swing.*;
-
-import org.hibernate.Session;
-import org.hibernate.Query;
-import pojos.Buffet;
-
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class BuffetDAO {
+
+    private static final BuffetDAO instance = new BuffetDAO();
+
+    public static BuffetDAO getInstance() {
+        return instance;
+    }
+
+    private BuffetDAO() {
+    }
+
     public void addBuffet(Buffet buffet) throws SQLException {
         Session session;
         try {

@@ -32,7 +32,7 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
         }
 
         try {
-            UserDAO userDAO = new UserDAO();
+            UserDAO userDAO = UserDAO.getInstance();
             User user = userDAO.getUserById(id);
 
             switch (user.getState()) {
@@ -54,7 +54,7 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
                     userDAO.updateUser(user);
                     System.out.println("runout " + message);
 
-                    ProductDAO productDAO = new ProductDAO();
+                    ProductDAO productDAO = ProductDAO.getInstance();
                     Collection<Product> products = productDAO.getAllProducts();
                     List<String> buttons = new LinkedList<>();
                     for (Product product : products) {
