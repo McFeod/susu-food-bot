@@ -2,8 +2,8 @@ package api;
 
 import DAO.UserDAO;
 import api.receive.ITelegramBotReceiveListener;
-import logic.User;
-import logic.UserState;
+import pojos.User;
+import pojos.UserState;
 import org.hibernate.ObjectNotFoundException;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.TelegramBotsApi;

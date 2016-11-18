@@ -10,7 +10,7 @@ import javax.swing.*;
 
 import org.hibernate.Session;
 import org.hibernate.Query;
-import logic.Buffet;
+import pojos.Buffet;
 
 
 public class BuffetDAO {
@@ -53,13 +53,13 @@ public class BuffetDAO {
         }
     }
 
-    public Buffet getBuffetById(Long buffet_id) throws SQLException {
+    public Buffet getBuffetById(Long id) throws SQLException {
         Session session;
         Buffet buffet = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            buffet = (Buffet) session.get(Buffet.class, buffet_id);
+            buffet = (Buffet) session.get(Buffet.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
@@ -74,7 +74,7 @@ public class BuffetDAO {
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            Query query = session.createQuery(" from Buffet " + " where name = :name ")
+            Query query = session.createQuery("from Buffet where name = :name")
                     .setString("name", name);
             buffets = query.list();
             session.getTransaction().commit();
@@ -91,7 +91,7 @@ public class BuffetDAO {
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            Query query = session.createQuery(" from Buffet " + " where admin = :isAdmin ")
+            Query query = session.createQuery("from Buffet where admin = :isAdmin")
                     .setBoolean("isAdmin", isAdmin);
             buffets = query.list();
             session.getTransaction().commit();
@@ -108,7 +108,7 @@ public class BuffetDAO {
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            Query query = session.createQuery(" from Buffet " + " where complained = :isComplained ")
+            Query query = session.createQuery("from Buffet where complained = :isComplained")
                     .setBoolean("isComplained", isComplained);
             buffets = query.list();
             session.getTransaction().commit();
@@ -118,12 +118,12 @@ public class BuffetDAO {
         return buffets;
     }
 
-    public void updateBuffet(Buffet buf) throws SQLException {
+    public void updateBuffet(Buffet buffet) throws SQLException {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            session.update(buf);
+            session.update(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);

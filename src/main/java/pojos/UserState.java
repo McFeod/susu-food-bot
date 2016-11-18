@@ -1,4 +1,4 @@
-package logic;
+package pojos;
 
 public enum UserState {
     WAITING, ADD_FEED_POINT, COMPLAIN, RUN_OUT_BUFFET, RUN_OUT_PRODUCT, ADD_ADVICE

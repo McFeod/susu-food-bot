@@ -1,7 +1,7 @@
 package handlers;
 
 import DAO.AdviceDAO;
-import logic.Advice;
+import pojos.Advice;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class AdvicesEventHandler {
             AdviceDAO adviceDAO = new AdviceDAO();
             Collection<Advice> advices = adviceDAO.getAllAdvices();
             for (Advice advice : advices) {
-                messages.add(advice.getAdvice());
+                messages.add(advice.getText());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -26,7 +26,7 @@ public class AdvicesEventHandler {
     public static void addAdvice(String text) {
         AdviceDAO adviceDAO = new AdviceDAO();
         Advice advice = new Advice();
-        advice.setAdvice(text);
+        advice.setText(text);
         try {
             adviceDAO.addAdvice(advice);
         } catch (SQLException e) {

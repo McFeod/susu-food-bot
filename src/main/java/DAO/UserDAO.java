@@ -7,7 +7,7 @@ import java.util.Collection;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
-import logic.User;
+import pojos.User;
 import util.HibernateUtil;
 
 public class UserDAO {
@@ -61,13 +61,13 @@ public class UserDAO {
         }
     }
     
-    public User getUserById(Long telegram_id) throws SQLException {
+    public User getUserById(Long id) throws SQLException {
         Session session;
         User user = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            user = (User) session.get(User.class,telegram_id);
+            user = (User) session.get(User.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);

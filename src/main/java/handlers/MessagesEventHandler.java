@@ -7,9 +7,9 @@ import api.exceptions.BotLogicException;
 import api.exceptions.FeedPointDoesNotExists;
 import api.exceptions.NotImplementedException;
 import api.exceptions.WrongRunOutParams;
-import logic.Buffet;
-import logic.Product;
-import logic.ProductsNotInStock;
+import pojos.Buffet;
+import pojos.Product;
+import pojos.ProductNotInStock;
 import util.Pair;
 
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ public class MessagesEventHandler {
         List<Pair<String, String>> messages = new ArrayList<>();
         try {
             ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
-            Collection<ProductsNotInStock> products;
+            Collection<ProductNotInStock> products;
 
             if (buffetName == null || buffetName.isEmpty())
                 products = productsNotInStockDAO.getAllProductsNotInStock();
@@ -43,7 +43,7 @@ public class MessagesEventHandler {
             if (products == null)
                 throw new FeedPointDoesNotExists();
 
-            for (ProductsNotInStock product : products) {
+            for (ProductNotInStock product : products) {
                 messages.add(new Pair<>(product.getBuffet().getName(), product.getProduct().getName()));
             }
         } catch (FeedPointDoesNotExists e) {
@@ -57,7 +57,7 @@ public class MessagesEventHandler {
     public static void runOut(String buffetName, String productName) throws BotLogicException {
         try {
             ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
-            ProductsNotInStock productNotInStock = new ProductsNotInStock();
+            ProductNotInStock productNotInStock = new ProductNotInStock();
 
             Buffet buffet = null;
             Product product = null;

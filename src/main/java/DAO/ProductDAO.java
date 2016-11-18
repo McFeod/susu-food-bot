@@ -11,7 +11,7 @@ import javax.swing.*;
 import org.hibernate.Session;
 import org.hibernate.Query;
 
-import logic.Product;
+import pojos.Product;
 
 public class ProductDAO {
     public void addProduct(Product product) throws SQLException {
@@ -53,13 +53,13 @@ public class ProductDAO {
         }
     }
 
-    public Product getProductById(Long product_id) throws SQLException {
+    public Product getProductById(Long id) throws SQLException {
         Session session;
         Product product = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            product = (Product) session.get(Product.class, product_id);
+            product = (Product) session.get(Product.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
@@ -74,7 +74,7 @@ public class ProductDAO {
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            Query query = session.createQuery(" from Product " + " where name = :name ")
+            Query query = session.createQuery("from Product where name = :name")
                     .setString("name", name);
             products = query.list();
             session.getTransaction().commit();

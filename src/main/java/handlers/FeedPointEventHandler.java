@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 import DAO.BuffetDAO;
 import api.exceptions.FeedPointDoesNotExists;
-import logic.Buffet;
+import pojos.Buffet;
 
 public class FeedPointEventHandler {
     public static ArrayList<String> getFeedPoints() {

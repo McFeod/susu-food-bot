@@ -9,13 +9,13 @@ import util.HibernateUtil;
 import javax.swing.*;
 
 import org.hibernate.Session;
-import logic.Advice;
+import pojos.Advice;
 
 public class AdviceDAO {
     public void addAdvice(Advice advice) throws SQLException {
         Session session;
         try {
-        	session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
             session.save(advice);
             session.getTransaction().commit();
