@@ -1,12 +1,12 @@
 package api.receive;
 
-
 import DAO.ProductDAO;
 import DAO.UserDAO;
 import api.exceptions.BotLogicException;
 import pojos.Product;
 import pojos.User;
 import pojos.UserState;
+import util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -22,48 +22,50 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
     }
 
     public void onMessageReceive(Long id, String message) {
-        if (messageReceiver == null)
+        if (messageReceiver == null) {
             return;
+        }
 
-        if (message == null || message.isEmpty()) {
+        if (StringUtils.isNullOrEmpty(message)) {
             messageReceiver.onMessageError(id, "");
             return;
         }
 
         try {
-            UserDAO db = new UserDAO();
-            User user = db.getUserById(id);
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.getUserById(id);
 
             switch (user.getState()) {
                 case ADD_FEED_POINT:
                     user.setState(UserState.WAITING);
-                    db.updateUser(user);
+                    userDAO.updateUser(user);
                     System.out.println("addfeedpoint " + message);
                     messageReceiver.onAddFeedPoint(id, message);
                     break;
                 case COMPLAIN:
                     user.setState(UserState.WAITING);
-                    db.updateUser(user);
+                    userDAO.updateUser(user);
                     System.out.println("complain " + message);
                     messageReceiver.onComplainFeedPoint(id, message);
                     break;
                 case RUN_OUT_BUFFET:
                     user.setState(UserState.RUN_OUT_PRODUCT);
                     user.setArgument(message);
-                    db.updateUser(user);
+                    userDAO.updateUser(user);
                     System.out.println("runout " + message);
 
-                    ProductDAO productDB = new ProductDAO();
-                    Collection<Product> products = productDB.getAllProducts();
+                    ProductDAO productDAO = new ProductDAO();
+                    Collection<Product> products = productDAO.getAllProducts();
                     List<String> buttons = new LinkedList<>();
-                    for (Product product : products)
+                    for (Product product : products) {
                         buttons.add(product.getName());
+                    }
 
                     messageReceiver.onSendMessage(id, "Введите название", buttons);
                     break;
                 case ADD_ADVICE:
                     user.setState(UserState.WAITING);
-                    db.updateUser(user);
+                    userDAO.updateUser(user);
                     System.out.println("addadvice " + message);
                     messageReceiver.onAddAdvice(id, message);
                     break;

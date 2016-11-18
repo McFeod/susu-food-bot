@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReceiveMessageParser {
-    //словарь, где каждой команде соответствует тип сообщения
+    // словарь, где каждой команде соответствует тип сообщения
     private static Map<String, MessageKind> commands = new HashMap<>();
     static {
         commands.put("/addadvice"     , MessageKind.ADD_ADVICE);
@@ -23,8 +23,8 @@ public class ReceiveMessageParser {
     }
 
     public static MessageResponse getKind(String msg) {
-        if (StringUtils.isNullOrEmptyOrWhitespace(msg)) {
-            return new MessageResponse("", MessageKind.ERROR);
+        if (StringUtils.isNullOrWhitespace(msg)) {
+            return MessageResponse.error();
         }
 
         msg = msg.trim();
@@ -47,7 +47,7 @@ public class ReceiveMessageParser {
             return new MessageResponse(rest, commands.get(command));
         }
 
-        //если не нашли, то возвращается ошибка
-        return new MessageResponse("", MessageKind.ERROR);
+        // если не нашли, то возвращается ошибка
+        return MessageResponse.error();
     }
 }

@@ -11,6 +11,7 @@ import pojos.Buffet;
 import pojos.Product;
 import pojos.ProductNotInStock;
 import util.Pair;
+import util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,29 +26,27 @@ public class MessagesEventHandler {
             ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
             Collection<ProductNotInStock> products;
 
-            if (buffetName == null || buffetName.isEmpty())
+            if (StringUtils.isNullOrEmpty(buffetName)) {
                 products = productsNotInStockDAO.getAllProductsNotInStock();
-            else {
-                Buffet buffet = null;
+            } else {
                 BuffetDAO buffetDAO = new BuffetDAO();
+                Buffet buffet;
                 Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
-                if (buffetsIterator.hasNext())
+                if (buffetsIterator.hasNext()) {
                     buffet = buffetsIterator.next();
-
-                if (buffet == null)
+                } else {
                     throw new FeedPointDoesNotExists();
-
+                }
                 products = productsNotInStockDAO.getProductsNotInStockByBuffet(buffet);
             }
 
-            if (products == null)
+            if (products == null) {
                 throw new FeedPointDoesNotExists();
+            }
 
             for (ProductNotInStock product : products) {
                 messages.add(new Pair<>(product.getBuffet().getName(), product.getProduct().getName()));
             }
-        } catch (FeedPointDoesNotExists e) {
-            throw e;
         } catch (SQLException e) {
             throw new NotImplementedException();
         }
@@ -59,18 +58,21 @@ public class MessagesEventHandler {
             ProductsNotInStockDAO productsNotInStockDAO = new ProductsNotInStockDAO();
             ProductNotInStock productNotInStock = new ProductNotInStock();
 
-            Buffet buffet = null;
-            Product product = null;
-
             BuffetDAO buffetDAO = new BuffetDAO();
+            Buffet buffet;
             Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
-            if (buffetsIterator.hasNext())
+            if (buffetsIterator.hasNext()) {
                 buffet = buffetsIterator.next();
+            } else {
+                throw new WrongRunOutParams();
+            }
 
             ProductDAO productDAO = new ProductDAO();
+            Product product = null;
             Iterator<Product> productsIterator = productDAO.getProductsByName(productName).iterator();
-            if (productsIterator.hasNext())
+            if (productsIterator.hasNext()) {
                 product = productsIterator.next();
+            }
 
             if (product == null) {
                 product = new Product();
@@ -78,18 +80,12 @@ public class MessagesEventHandler {
                 productDAO.addProduct(product);
             }
 
-            if (buffet == null)
-                throw new WrongRunOutParams();
-
             productNotInStock.setBuffet(buffet);
             productNotInStock.setProduct(product);
 
             productsNotInStockDAO.addProductNotInStock(productNotInStock);
-        } catch (WrongRunOutParams e) {
-            throw e;
         } catch (SQLException e) {
             throw new NotImplementedException();
         }
     }
-
 }

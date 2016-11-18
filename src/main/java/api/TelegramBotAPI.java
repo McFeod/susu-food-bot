@@ -2,8 +2,6 @@ package api;
 
 import DAO.UserDAO;
 import api.receive.ITelegramBotReceiveListener;
-import pojos.User;
-import pojos.UserState;
 import org.hibernate.ObjectNotFoundException;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.TelegramBotsApi;
@@ -14,6 +12,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import pojos.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import static api.APIConstants.BOT_TOKEN;
 
 public class TelegramBotAPI implements ITelegramBotAPI {
 
-    private TelegramBotsApi telegramBotsApi;
     private TelegramLongPollingBot telegramLongPollingBot;
 
     private ITelegramBotReceiveListener receiveListener;
@@ -32,7 +30,7 @@ public class TelegramBotAPI implements ITelegramBotAPI {
     private ITelegramBotReceiveListener receiveListenerParam2;
 
     public TelegramBotAPI() {
-        telegramBotsApi = new TelegramBotsApi();
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 
         try {
             telegramLongPollingBot = new TelegramLongPollingBot() {
@@ -41,48 +39,55 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                     return BOT_TOKEN;
                 }
 
+                @Override
                 public String getBotUsername() {
                     return BOT_NAME;
                 }
 
+                @Override
                 public void onUpdateReceived(Update update) {
-                    if (update != null && update.hasMessage()) {
+                    if ((update != null) && update.hasMessage()) {
                         try {
-                            UserDAO db = new UserDAO();
+                            UserDAO userDAO = new UserDAO();
                             User user;
                             try {
-                                user = db.getUserById(update.getMessage().getChatId());
+                                user = userDAO.getUserById(update.getMessage().getChatId());
                             } catch (ObjectNotFoundException e) {
-                                user = new User(update.getMessage().getChatId(), "", 0, UserState.WAITING);
-                                db.addUser(user);
+                                user = new User(update.getMessage().getChatId());
+                                userDAO.addUser(user);
                             }
 
-                            if (user == null) {
-                                user = new User(update.getMessage().getChatId(), "", 0, UserState.WAITING);
-                                db.addUser(user);
-                            }
+                            // кажется это не имеет смысла, user всегда создастся выше
+                            // if (user == null) {
+                            //     user = new User(update.getMessage().getChatId());
+                            //     userDAO.addUser(user);
+                            // }
 
                             switch (user.getState()) {
                                 case WAITING:
                                     if (receiveListener != null)
-                                        receiveListener.onMessageReceive(update.getMessage().getChatId(),
+                                        receiveListener.onMessageReceive(
+                                                update.getMessage().getChatId(),
                                                 update.getMessage().getText());
                                     break;
+                                case ADD_ADVICE:
                                 case ADD_FEED_POINT:
                                 case COMPLAIN:
                                 case RUN_OUT_BUFFET:
-                                case ADD_ADVICE:
                                     if (receiveListenerParam1 != null)
-                                        receiveListenerParam1.onMessageReceive(update.getMessage().getChatId(),
+                                        receiveListenerParam1.onMessageReceive(
+                                                update.getMessage().getChatId(),
                                                 update.getMessage().getText());
                                     break;
                                 case RUN_OUT_PRODUCT:
                                     if (receiveListenerParam2 != null)
-                                        receiveListenerParam2.onMessageReceive(update.getMessage().getChatId(),
+                                        receiveListenerParam2.onMessageReceive(
+                                                update.getMessage().getChatId(),
                                                 update.getMessage().getText());
                                     break;
                             }
                         } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -93,22 +98,27 @@ public class TelegramBotAPI implements ITelegramBotAPI {
         }
     }
 
+    @Override
     public void setOnReceiveListener(ITelegramBotReceiveListener receiveListener) {
         this.receiveListener = receiveListener;
     }
 
+    @Override
     public void setOnReceiveListenerParam1(ITelegramBotReceiveListener receiveListener) {
         this.receiveListenerParam1 = receiveListener;
     }
 
+    @Override
     public void setOnReceiveListenerParam2(ITelegramBotReceiveListener receiveListener) {
         this.receiveListenerParam2 = receiveListener;
     }
 
+    @Override
     public void sendMessage(Long id, String text) {
         sendMessage(id, text, null);
     }
 
+    @Override
     public void sendMessage(Long id, String text, List<String> buttons) {
         SendMessage message = new SendMessage();
         message.enableMarkdown(true);
@@ -120,20 +130,21 @@ public class TelegramBotAPI implements ITelegramBotAPI {
             keyboard.setResizeKeyboard(true);
             keyboard.setOneTimeKeyboad(true);
             List<KeyboardRow> rows = new ArrayList<>(buttons.size());
-            for (String str : buttons) {
+            for (String button : buttons) {
                 KeyboardRow row = new KeyboardRow();
-                row.add(new KeyboardButton(str));
+                row.add(new KeyboardButton(button));
                 rows.add(row);
             }
             keyboard.setKeyboard(rows);
             message.setReplyMarkup(keyboard);
-        } else
+        } else {
             message.setReplyMarkup(new ReplyKeyboardHide());
+        }
 
         try {
             telegramLongPollingBot.sendMessage(message);
         } catch (TelegramApiException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 }

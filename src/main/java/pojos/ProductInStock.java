@@ -10,10 +10,10 @@ public class ProductInStock implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(targetEntity = Product.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Product.class, cascade = CascadeType.ALL, optional = false)
     private Product product;
 
-    @ManyToOne(targetEntity = Buffet.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Buffet.class, cascade = CascadeType.ALL, optional = false)
     private Buffet buffet;
 
     public ProductInStock(Long id, Product product, Buffet buffet) {
