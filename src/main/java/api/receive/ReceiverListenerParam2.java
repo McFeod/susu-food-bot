@@ -3,8 +3,8 @@ package api.receive;
 
 import DAO.UserDAO;
 import api.exceptions.BotLogicException;
-import logic.User;
-import logic.UserState;
+import pojos.User;
+import pojos.UserState;
 
 import java.sql.SQLException;
 

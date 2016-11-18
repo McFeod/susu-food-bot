@@ -5,10 +5,10 @@ import DAO.BuffetDAO;
 import DAO.ProductDAO;
 import DAO.UserDAO;
 import api.exceptions.BotLogicException;
-import logic.Buffet;
-import logic.Product;
-import logic.User;
-import logic.UserState;
+import pojos.Buffet;
+import pojos.Product;
+import pojos.User;
+import pojos.UserState;
 
 import java.util.Collection;
 import java.util.LinkedList;

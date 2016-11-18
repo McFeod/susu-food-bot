@@ -4,9 +4,9 @@ package api.receive;
 import DAO.ProductDAO;
 import DAO.UserDAO;
 import api.exceptions.BotLogicException;
-import logic.Product;
-import logic.User;
-import logic.UserState;
+import pojos.Product;
+import pojos.User;
+import pojos.UserState;
 
 import java.sql.SQLException;
 import java.util.Collection;

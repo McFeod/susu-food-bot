@@ -9,18 +9,13 @@ public class TelegramBot {
         new TelegramBot();
     }
 
-    private ITelegramBotAPI telegramBotAPI;
-    private ITelegramBotReceiveListener receiveListener;
-    private ITelegramBotReceiveListener receiveListenerParam1;
-    private ITelegramBotReceiveListener receiveListenerParam2;
-
     public TelegramBot() {
-        telegramBotAPI = new TelegramBotAPI();
+        ITelegramBotAPI telegramBotAPI = new TelegramBotAPI();
         IMessageReceiver messageReceiver = new MessageReceiver(telegramBotAPI);
 
-        receiveListener = new ReceiverListener(messageReceiver);
-        receiveListenerParam1 = new ReceiverListenerParam1(messageReceiver);
-        receiveListenerParam2 = new ReceiverListenerParam2(messageReceiver);
+        ITelegramBotReceiveListener receiveListener = new ReceiverListener(messageReceiver);
+        ITelegramBotReceiveListener receiveListenerParam1 = new ReceiverListenerParam1(messageReceiver);
+        ITelegramBotReceiveListener receiveListenerParam2 = new ReceiverListenerParam2(messageReceiver);
 
         telegramBotAPI.setOnReceiveListener(receiveListener);
         telegramBotAPI.setOnReceiveListenerParam1(receiveListenerParam1);
