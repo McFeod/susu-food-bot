@@ -57,11 +57,12 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                                 userDAO.addUser(user);
                             }
 
-                            // кажется это не имеет смысла, user всегда создастся выше
-                            // if (user == null) {
-                            //     user = new User(update.getMessage().getChatId());
-                            //     userDAO.addUser(user);
-                            // }
+                            // все-таки эта проверка нужна, потому что кто-то кидает SQLException
+                            // а ловит ObjectNotFoundException
+                            if (user == null) {
+                                user = new User(update.getMessage().getChatId());
+                                userDAO.addUser(user);
+                            }
 
                             switch (user.getState()) {
                                 case WAITING:
