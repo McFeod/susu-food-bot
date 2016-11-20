@@ -19,8 +19,7 @@ public class StringUtils {
             builder.append(iterator.next());
         }
         while (iterator.hasNext()) {
-            builder.append(delimiter);
-            builder.append(iterator.next());
+            builder.append(delimiter).append(iterator.next());
         }
         return builder.toString();
     }
@@ -39,7 +38,7 @@ public class StringUtils {
      * @param str строка
      * @return является ли строка null, пустой или состоит из пробельных символов
      */
-    public static boolean isNullOrWhitespace(String str) {
+    public static boolean isNullOrBlank(String str) {
         if (str == null) {
             return true;
         }

@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import pojos.Product;
 import util.HibernateUtil;
 
-import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +28,7 @@ public class ProductDAO {
             session.save(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -43,7 +42,7 @@ public class ProductDAO {
             products = session.createCriteria(Product.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return products;
     }
@@ -56,7 +55,7 @@ public class ProductDAO {
             session.delete(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -69,7 +68,7 @@ public class ProductDAO {
             product = (Product) session.get(Product.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return product;
     }
@@ -87,7 +86,7 @@ public class ProductDAO {
             session.getTransaction().commit();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return products;
     }

@@ -33,7 +33,8 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
         }
 
         MessageResponse response = ReceiveMessageParser.getKind(message);
-        System.out.println(response.getKind() + " \"" + response.getText() + "\"");
+        String responseText = response.getText();
+        System.out.println(response.getKind() + (responseText.isEmpty() ? "" : " \"" + responseText + "\""));
         try {
             switch (response.getKind()) {
                 case ERROR:
@@ -57,18 +58,18 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     messageReceiver.onGetUserFeedPoints(id);
                     break;
                 case ADD_FEED_POINT:
-                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                    if (StringUtils.isNullOrEmpty(responseText)) {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_FEED_POINT);
                         userDAO.updateUser(user);
-                        messageReceiver.onSendMessage(id, "Введите название");
+                        messageReceiver.onSendMessage(id, "Введите название места:");
                     } else {
-                        messageReceiver.onAddFeedPoint(id, response.getText());
+                        messageReceiver.onAddFeedPoint(id, responseText);
                     }
                     break;
                 case COMPLAIN:
-                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                    if (StringUtils.isNullOrEmpty(responseText)) {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.COMPLAIN);
@@ -80,18 +81,17 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         for (Buffet buffet : buffets) {
                             buttons.add(buffet.getName());
                         }
-
-                        messageReceiver.onSendMessage(id, "Введите название", buttons);
+                        messageReceiver.onSendMessage(id, "Введите название места:", buttons);
                     } else {
-                        messageReceiver.onComplainFeedPoint(id, response.getText());
+                        messageReceiver.onComplainFeedPoint(id, responseText);
                     }
                     break;
 
                 case MSG_LIST:
-                    messageReceiver.onGetMessages(id, response.getText());
+                    messageReceiver.onGetMessages(id, responseText);
                     break;
                 case RUN_OUT:
-                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                    if (StringUtils.isNullOrEmpty(responseText)) {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_BUFFET);
@@ -103,13 +103,12 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         for (Buffet buffet : buffets) {
                             buttons.add(buffet.getName());
                         }
-
-                        messageReceiver.onSendMessage(id, "Введите название", buttons);
+                        messageReceiver.onSendMessage(id, "Введите название места:", buttons);
                     } else {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_PRODUCT);
-                        user.setArgument(response.getText());
+                        user.setArgument(responseText);
                         userDAO.updateUser(user);
 
                         ProductDAO productDAO = ProductDAO.getInstance();
@@ -118,23 +117,22 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         for (Product product : products) {
                             buttons.add(product.getName());
                         }
-
-                        messageReceiver.onSendMessage(id, "Введите название", buttons);
+                        messageReceiver.onSendMessage(id, "Введите название продукта:", buttons);
                     }
                     break;
 
                 case ADVICES:
-                    messageReceiver.onGetAdvices(id, response.getText());
+                    messageReceiver.onGetAdvices(id, responseText);
                     break;
                 case ADD_ADVICE:
-                    if (StringUtils.isNullOrEmpty(response.getText())) {
+                    if (StringUtils.isNullOrEmpty(responseText)) {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_ADVICE);
                         userDAO.updateUser(user);
-                        messageReceiver.onSendMessage(id, "Введите текст");
+                        messageReceiver.onSendMessage(id, "Введите текст совета:");
                     } else {
-                        messageReceiver.onAddAdvice(id, response.getText());
+                        messageReceiver.onAddAdvice(id, responseText);
                     }
                     break;
             }

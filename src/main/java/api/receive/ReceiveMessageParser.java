@@ -23,7 +23,7 @@ public class ReceiveMessageParser {
     }
 
     public static MessageResponse getKind(String msg) {
-        if (StringUtils.isNullOrWhitespace(msg)) {
+        if (StringUtils.isNullOrBlank(msg)) {
             return MessageResponse.error();
         }
 

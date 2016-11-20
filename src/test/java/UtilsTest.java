@@ -40,25 +40,25 @@ public class UtilsTest {
     }
 
     @Test
-    public void testIsNullOrWhitespaceOnNull() {
-        Assert.assertTrue(StringUtils.isNullOrWhitespace(null));
+    public void testIsNullOrBlankOnNull() {
+        Assert.assertTrue(StringUtils.isNullOrBlank(null));
     }
 
     @Test
-    public void testIsNullOrWhitespaceOnEmpty() {
+    public void testIsNullOrBlankOnEmpty() {
         String str = "";
-        Assert.assertTrue(StringUtils.isNullOrWhitespace(str));
+        Assert.assertTrue(StringUtils.isNullOrBlank(str));
     }
 
     @Test
-    public void testIsNullOrWhitespaceOnWhitespace() {
+    public void testIsNullOrBlankOnWhitespace() {
         String str = " \t\n";
-        Assert.assertTrue(StringUtils.isNullOrWhitespace(str));
+        Assert.assertTrue(StringUtils.isNullOrBlank(str));
     }
 
     @Test
-    public void testIsNullOrWhitespaceOnNonEmpty() {
+    public void testIsNullOrBlankOnNonEmpty() {
         String str = "foobar";
-        Assert.assertFalse(StringUtils.isNullOrWhitespace(str));
+        Assert.assertFalse(StringUtils.isNullOrBlank(str));
     }
 }

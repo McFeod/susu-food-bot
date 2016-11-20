@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import pojos.Advice;
 import util.HibernateUtil;
 
-import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +27,7 @@ public class AdviceDAO {
             session.save(advice);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -42,7 +41,7 @@ public class AdviceDAO {
             advices = session.createCriteria(Advice.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return advices;
     }
@@ -55,7 +54,7 @@ public class AdviceDAO {
             session.delete(advice);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 }
