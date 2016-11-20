@@ -106,7 +106,7 @@ public class MessageReceiver implements IMessageReceiver {
         if (advices.isEmpty()) {
             throw new EmptyAdviceList();
         }
-        telegramBotAPI.sendMessage(id, "*Advices:*\n" + StringUtils.join(advices, "\n"));
+        telegramBotAPI.sendMessage(id, "*Advices:*\n" + StringUtils.join(advices, "\n\n"));
     }
 
     @Override
