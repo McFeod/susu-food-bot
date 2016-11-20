@@ -10,18 +10,14 @@ import api.exceptions.WrongRunOutParams;
 import pojos.Buffet;
 import pojos.Product;
 import pojos.ProductNotInStock;
-import util.Pair;
 import util.StringUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class MessagesEventHandler {
-    public static List<Pair<String, String>> getMessages(String buffetName) throws BotLogicException {
-        List<Pair<String, String>> messages = new ArrayList<>();
+    public static Map<String, List<String>> getMessages(String buffetName) throws BotLogicException {
+        Map<String, List<String>> messages = new HashMap<>();
         try {
             ProductsNotInStockDAO productsNotInStockDAO = ProductsNotInStockDAO.getInstance();
             Collection<ProductNotInStock> products;
@@ -31,9 +27,9 @@ public class MessagesEventHandler {
             } else {
                 BuffetDAO buffetDAO = BuffetDAO.getInstance();
                 Buffet buffet;
-                Iterator<Buffet> buffetsIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
-                if (buffetsIterator.hasNext()) {
-                    buffet = buffetsIterator.next();
+                Iterator<Buffet> bufferIterator = buffetDAO.getBuffetsByName(buffetName).iterator();
+                if (bufferIterator.hasNext()) {
+                    buffet = bufferIterator.next();
                 } else {
                     throw new FeedPointDoesNotExists();
                 }
@@ -45,7 +41,12 @@ public class MessagesEventHandler {
             }
 
             for (ProductNotInStock product : products) {
-                messages.add(new Pair<>(product.getBuffet().getName(), product.getProduct().getName()));
+                List<String> list = messages.get(product.getBuffet().getName());
+                if (list == null) {
+                    messages.put(product.getBuffet().getName(), new ArrayList<String>());
+                    list = messages.get(product.getBuffet().getName());
+                }
+                list.add(product.getProduct().getName());
             }
         } catch (SQLException e) {
             throw new NotImplementedException();

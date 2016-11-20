@@ -7,7 +7,6 @@ import pojos.Product;
 import pojos.ProductNotInStock;
 import util.HibernateUtil;
 
-import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +30,7 @@ public class ProductsNotInStockDAO {
             session.save(productNotInStock);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -45,7 +44,7 @@ public class ProductsNotInStockDAO {
             productNotInStock = session.createCriteria(ProductNotInStock.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return productNotInStock;
     }
@@ -58,7 +57,7 @@ public class ProductsNotInStockDAO {
             session.delete(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -71,7 +70,7 @@ public class ProductsNotInStockDAO {
             product = (ProductNotInStock) session.get(ProductNotInStock.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return product;
     }
@@ -89,7 +88,7 @@ public class ProductsNotInStockDAO {
             products = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return products;
     }
@@ -107,7 +106,7 @@ public class ProductsNotInStockDAO {
             products = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return products;
     }

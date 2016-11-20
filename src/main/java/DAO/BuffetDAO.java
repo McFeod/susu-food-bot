@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import pojos.Buffet;
 import util.HibernateUtil;
 
-import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +28,7 @@ public class BuffetDAO {
             session.save(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -43,7 +42,7 @@ public class BuffetDAO {
             buffets = session.createCriteria(Buffet.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return buffets;
     }
@@ -56,7 +55,7 @@ public class BuffetDAO {
             session.delete(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при удалении", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 
@@ -69,7 +68,7 @@ public class BuffetDAO {
             buffet = (Buffet) session.get(Buffet.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'findById'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return buffet;
     }
@@ -86,7 +85,7 @@ public class BuffetDAO {
             buffets = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return buffets;
     }
@@ -103,7 +102,7 @@ public class BuffetDAO {
             buffets = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return buffets;
     }
@@ -120,7 +119,7 @@ public class BuffetDAO {
             buffets = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка 'getAll'", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
         return buffets;
     }
@@ -133,7 +132,7 @@ public class BuffetDAO {
             session.update(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка при вставке", JOptionPane.OK_OPTION);
+            e.printStackTrace();
         }
     }
 }

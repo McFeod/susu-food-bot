@@ -10,7 +10,7 @@ public class Advice implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String text;
 
     public Advice(Long id, String text) {
