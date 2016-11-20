@@ -58,7 +58,11 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     messageReceiver.onGetUserFeedPoints(id);
                     break;
                 case ADD_FEED_POINT:
+<<<<<<< HEAD
                     if (StringUtils.isNullOrEmpty(responseText)) {
+=======
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+>>>>>>> 633edbf93ea382870dfe27a9ee2a61db801e0722
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_FEED_POINT);
@@ -69,7 +73,11 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     }
                     break;
                 case COMPLAIN:
+<<<<<<< HEAD
                     if (StringUtils.isNullOrEmpty(responseText)) {
+=======
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+>>>>>>> 633edbf93ea382870dfe27a9ee2a61db801e0722
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.COMPLAIN);
@@ -91,7 +99,11 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     messageReceiver.onGetMessages(id, responseText);
                     break;
                 case RUN_OUT:
+<<<<<<< HEAD
                     if (StringUtils.isNullOrEmpty(responseText)) {
+=======
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+>>>>>>> 633edbf93ea382870dfe27a9ee2a61db801e0722
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.RUN_OUT_BUFFET);
@@ -125,7 +137,11 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     messageReceiver.onGetAdvices(id, responseText);
                     break;
                 case ADD_ADVICE:
+<<<<<<< HEAD
                     if (StringUtils.isNullOrEmpty(responseText)) {
+=======
+                    if (StringUtils.isNullOrEmpty(response.getText())) {
+>>>>>>> 633edbf93ea382870dfe27a9ee2a61db801e0722
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_ADVICE);
