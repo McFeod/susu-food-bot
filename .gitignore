@@ -6,3 +6,4 @@
 /bin/
 *META-INF/
 /src/main/java/util/ConnectionSettings.java
+/classes/
