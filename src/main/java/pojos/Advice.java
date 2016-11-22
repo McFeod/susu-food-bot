@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "advices")
 public class Advice implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, columnDefinition = "text")

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "buffets")
 public class Buffet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -14,10 +14,10 @@ public class Buffet {
 
     private String place;
 
-    @Column(name = "admin", nullable = false)
+    @Column(name = "admin", nullable = false, columnDefinition = "bool default false")
     private Boolean isAdmin;
 
-    @Column(name = "complained", nullable = false)
+    @Column(name = "complained", nullable = false, columnDefinition = "bool default false")
     private Boolean isComplained;
 
     @Column(name = "user_id")

@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name = "products_in_stock")
 public class ProductInStock implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(targetEntity = Product.class, cascade = CascadeType.ALL, optional = false)
