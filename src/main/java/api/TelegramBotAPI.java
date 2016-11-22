@@ -80,6 +80,7 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                                                 update.getMessage().getChatId(),
                                                 update.getMessage().getText());
                                     break;
+                                case ADD_FEED_POINT_PLACE:
                                 case RUN_OUT_PRODUCT:
                                     if (receiveListenerParam2 != null)
                                         receiveListenerParam2.onMessageReceive(

@@ -20,6 +20,7 @@ public class ReceiveMessageParser {
         commands.put("/start"         , MessageKind.START);
         commands.put("/stop"          , MessageKind.STOP);
         commands.put("/userfeedpoints", MessageKind.USER_FEED_POINTS);
+        commands.put("/cancel", MessageKind.CANCEL);
     }
 
     public static MessageResponse getKind(String msg) {

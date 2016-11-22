@@ -35,40 +35,48 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
             UserDAO userDAO = UserDAO.getInstance();
             User user = userDAO.getUserById(id);
 
-            switch (user.getState()) {
-                case ADD_FEED_POINT:
-                    user.setState(UserState.WAITING);
-                    userDAO.updateUser(user);
-                    System.out.println("addfeedpoint " + message);
-                    messageReceiver.onAddFeedPoint(id, message);
-                    break;
-                case COMPLAIN:
-                    user.setState(UserState.WAITING);
-                    userDAO.updateUser(user);
-                    System.out.println("complain " + message);
-                    messageReceiver.onComplainFeedPoint(id, message);
-                    break;
-                case RUN_OUT_BUFFET:
-                    user.setState(UserState.RUN_OUT_PRODUCT);
-                    user.setArgument(message);
-                    userDAO.updateUser(user);
-                    System.out.println("runout " + message);
+            MessageResponse response = ReceiveMessageParser.getKind(message);
+            if (response.getKind() == MessageKind.CANCEL) {
+                user.setState(UserState.WAITING);
+                userDAO.updateUser(user);
+                messageReceiver.onCancel(id);
+            } else {
+                switch (user.getState()) {
+                    case ADD_FEED_POINT:
+                        user.setState(UserState.ADD_FEED_POINT_PLACE);
+                        user.setArgument(message);
+                        userDAO.updateUser(user);
+                        System.out.println("addfeedpoint " + message);
+                        messageReceiver.onSendMessage(id, "Введите описание места");
+                        break;
+                    case COMPLAIN:
+                        user.setState(UserState.WAITING);
+                        userDAO.updateUser(user);
+                        System.out.println("complain " + message);
+                        messageReceiver.onComplainFeedPoint(id, message);
+                        break;
+                    case RUN_OUT_BUFFET:
+                        user.setState(UserState.RUN_OUT_PRODUCT);
+                        user.setArgument(message);
+                        userDAO.updateUser(user);
+                        System.out.println("runout " + message);
 
-                    ProductDAO productDAO = ProductDAO.getInstance();
-                    Collection<Product> products = productDAO.getAllProducts();
-                    List<String> buttons = new LinkedList<>();
-                    for (Product product : products) {
-                        buttons.add(product.getName());
-                    }
+                        ProductDAO productDAO = ProductDAO.getInstance();
+                        Collection<Product> products = productDAO.getAllProducts();
+                        List<String> buttons = new LinkedList<>();
+                        for (Product product : products) {
+                            buttons.add(product.getName());
+                        }
 
-                    messageReceiver.onSendMessage(id, "Введите название", buttons);
-                    break;
-                case ADD_ADVICE:
-                    user.setState(UserState.WAITING);
-                    userDAO.updateUser(user);
-                    System.out.println("addadvice " + message);
-                    messageReceiver.onAddAdvice(id, message);
-                    break;
+                        messageReceiver.onSendMessage(id, "Введите название", buttons);
+                        break;
+                    case ADD_ADVICE:
+                        user.setState(UserState.WAITING);
+                        userDAO.updateUser(user);
+                        System.out.println("addadvice " + message);
+                        messageReceiver.onAddAdvice(id, message);
+                        break;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

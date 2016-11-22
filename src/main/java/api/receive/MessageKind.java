@@ -13,4 +13,5 @@ public enum MessageKind {
     START,
     STOP,
     USER_FEED_POINTS,
+    CANCEL
 }

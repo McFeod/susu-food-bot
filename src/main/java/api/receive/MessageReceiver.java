@@ -7,6 +7,7 @@ import handlers.FeedPointEventHandler;
 import handlers.MessagesEventHandler;
 import util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,8 @@ public class MessageReceiver implements IMessageReceiver {
     }
 
     @Override
-    public void onStart(Long id) {
+    public void onStart(Long id) throws BotLogicException {
+        onHelp(id);
     }
 
     @Override
@@ -47,31 +49,33 @@ public class MessageReceiver implements IMessageReceiver {
 
     @Override
     public void onGetFeedPoints(Long id) throws BotLogicException {
-        List<String> feedPoints = FeedPointEventHandler.getFeedPoints();
+        HashMap<String, String> feedPoints = FeedPointEventHandler.getFeedPoints();
         if (feedPoints.isEmpty()) {
             throw new EmptyFeedPointList();
         }
-        telegramBotAPI.sendMessage(id, "*Feed points:*\n" + StringUtils.join(feedPoints, "\n"));
+        telegramBotAPI.sendMessage(id, "*Feed points:*\n"
+                + StringUtils.join(feedPoints.entrySet(), "\n"));
     }
 
     @Override
     public void onGetUserFeedPoints(Long id) throws BotLogicException {
-        List<String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
+        HashMap<String, String> feedPoints = FeedPointEventHandler.getUserFeedPoints();
         if (feedPoints.isEmpty()) {
             throw new EmptyUserFeedPointList();
         }
-        telegramBotAPI.sendMessage(id, "*User feed points:*\n" + StringUtils.join(feedPoints, "\n"));
+        telegramBotAPI.sendMessage(id, "*User feed points:*\n"
+                + StringUtils.join(feedPoints.entrySet(), "\n"));
     }
 
     @Override
-    public void onAddFeedPoint(Long id, String text) throws BotLogicException {
-        FeedPointEventHandler.addFeedPoint(id,text);
+    public void onAddFeedPoint(Long id, String buffet, String place) throws BotLogicException {
+        FeedPointEventHandler.addFeedPoint(id, buffet, place);
         telegramBotAPI.sendMessage(id, "Место успешно добавлено.");
     }
 
     @Override
     public void onComplainFeedPoint(Long id, String text) throws BotLogicException {
-        FeedPointEventHandler.complainFeedPoint(id,text);
+        FeedPointEventHandler.complainFeedPoint(id, text);
         telegramBotAPI.sendMessage(id, "Жалоба принята.");
     }
 
@@ -113,6 +117,11 @@ public class MessageReceiver implements IMessageReceiver {
     public void onAddAdvice(Long id, String text) throws BotLogicException {
         AdvicesEventHandler.addAdvice(text);
         telegramBotAPI.sendMessage(id, "Совет успешно добавлен.");
+    }
+
+    @Override
+    public void onCancel(Long id) {
+        telegramBotAPI.sendMessage(id, "Отменено.");
     }
 
     @Override
