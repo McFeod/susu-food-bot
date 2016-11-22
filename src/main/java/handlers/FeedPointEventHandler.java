@@ -9,16 +9,17 @@ import pojos.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class FeedPointEventHandler {
-    public static ArrayList<String> getFeedPoints() {
-        ArrayList<String> feedPoints = new ArrayList<>();
+    public static HashMap<String, String> getFeedPoints() {
+        HashMap<String, String> feedPoints = new HashMap<>();
         try {
             BuffetDAO buffetDAO = BuffetDAO.getInstance();
             Collection<Buffet> buffets = buffetDAO.getBuffetsByAdmin(true);
             for (Buffet buffet : buffets) {
-                feedPoints.add(buffet.getName());
+                feedPoints.put(buffet.getName(), buffet.getPlace());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -26,13 +27,13 @@ public class FeedPointEventHandler {
         return feedPoints;
     }
 
-    public static ArrayList<String> getUserFeedPoints() {
-        ArrayList<String> feedPoints = new ArrayList<>();
+    public static HashMap<String, String> getUserFeedPoints() {
+        HashMap<String, String> feedPoints = new HashMap<>();
         try {
             BuffetDAO buffetDAO = BuffetDAO.getInstance();
             Collection<Buffet> buffets = buffetDAO.getBuffetsByAdmin(false);
             for (Buffet buffet : buffets) {
-                feedPoints.add(buffet.getName());
+                feedPoints.put(buffet.getName(), buffet.getPlace());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +41,7 @@ public class FeedPointEventHandler {
         return feedPoints;
     }
 
-    public static void addFeedPoint(long id,String name) {
+    public static void addFeedPoint(long id, String buffetName, String placeName) {
         BuffetDAO buffetDAO = BuffetDAO.getInstance();
         UserDAO userDAO = UserDAO.getInstance();
         Buffet buffet = new Buffet();
@@ -51,7 +52,8 @@ public class FeedPointEventHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        buffet.setName(name);
+        buffet.setName(buffetName);
+        buffet.setPlace(placeName);
         try {
             buffetDAO.addBuffet(buffet);
         } catch (SQLException e) {
@@ -59,7 +61,7 @@ public class FeedPointEventHandler {
         }
     }
 
-    public static void complainFeedPoint(long id,String name) throws FeedPointDoesNotExists {
+    public static void complainFeedPoint(long id, String name) throws FeedPointDoesNotExists {
         BuffetDAO buffetDAO = BuffetDAO.getInstance();
         try {
             Collection<Buffet> buffets = buffetDAO.getBuffetsByName(name);

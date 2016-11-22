@@ -71,7 +71,7 @@ public class MessagesEventHandler {
             if (buffetsIterator.hasNext()) {
                 buffet = buffetsIterator.next();
             } else {
-                throw new WrongRunOutParams();
+                throw new FeedPointDoesNotExists();
             }
             Iterator<ProductNotInStock> products = productsNotInStockDAO.getProductsNotInStockByBuffet(buffet).iterator();
             while (products.hasNext())

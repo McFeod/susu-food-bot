@@ -65,7 +65,12 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         userDAO.updateUser(user);
                         messageReceiver.onSendMessage(id, "Введите название места:");
                     } else {
-                        messageReceiver.onAddFeedPoint(id, responseText);
+                        UserDAO userDAO = UserDAO.getInstance();
+                        User user = userDAO.getUserById(id);
+                        user.setState(UserState.ADD_FEED_POINT_PLACE);
+                        user.setArgument(responseText);
+                        userDAO.updateUser(user);
+                        messageReceiver.onSendMessage(id, "Введите описание места:");
                     }
                     break;
                 case COMPLAIN:
@@ -134,6 +139,9 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                     } else {
                         messageReceiver.onAddAdvice(id, responseText);
                     }
+                    break;
+                case CANCEL:
+                    messageReceiver.onSendMessage(id, "Нечего отменять.");
                     break;
             }
         }

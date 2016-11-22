@@ -1,6 +1,8 @@
 package util;
 
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * полезные функции для работы со строками
@@ -20,6 +22,28 @@ public class StringUtils {
         }
         while (iterator.hasNext()) {
             builder.append(delimiter).append(iterator.next());
+        }
+        return builder.toString();
+    }
+
+    /**
+     * объединяет коллекцию строк в одну строку, используя указанный разделитель
+     * @param iterable коллекция строк
+     * @param delimiter разделитель
+     * @return объединенная строка
+     */
+    public static String join(Set<Map.Entry<String, String>> iterable,
+                              String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        Iterator<Map.Entry<String, String>> iterator = iterable.iterator();
+        if (iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            builder.append(entry.getKey() + " - " + entry.getValue());
+        }
+        while (iterator.hasNext()) {
+            builder.append(delimiter);
+            Map.Entry<String, String> entry = iterator.next();
+            builder.append(entry.getKey() + " - " + entry.getValue());
         }
         return builder.toString();
     }
