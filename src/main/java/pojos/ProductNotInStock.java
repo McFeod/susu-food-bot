@@ -2,6 +2,7 @@ package pojos;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "products_not_in_stock")
@@ -15,6 +16,9 @@ public class ProductNotInStock implements Serializable {
 
     @ManyToOne(targetEntity = Buffet.class, cascade = CascadeType.ALL, optional = false)
     private Buffet buffet;
+    
+    @Column
+    private Calendar date;
 
     public ProductNotInStock(Long id, Product product, Buffet buffet) {
         this.id      = id;
@@ -27,6 +31,12 @@ public class ProductNotInStock implements Serializable {
         this.buffet  = buffet;
     }
 
+    public ProductNotInStock(Product product, Buffet buffet, Calendar date) {
+        this.product = product;
+        this.buffet  = buffet;
+        this.date    = date;
+    }
+    
     public ProductNotInStock() {
     }
 
@@ -52,5 +62,16 @@ public class ProductNotInStock implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+    
+    
+    public void setDate(Calendar date)
+    {
+        this.date = date;
+    }
+    
+    public Calendar getDate()
+    {
+        return date;
     }
 }
