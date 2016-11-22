@@ -150,7 +150,6 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
             messageReceiver.onMessageError(id, e.getMessage());
         }
         catch (Exception e){
-            e.printStackTrace();
             messageReceiver.onMessageError(id, Texts.UNEXPECTED_ERROR);
         }
     }

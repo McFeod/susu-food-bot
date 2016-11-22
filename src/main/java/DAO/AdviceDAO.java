@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import pojos.Advice;
 import util.HibernateUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,7 +18,7 @@ public class AdviceDAO {
     private AdviceDAO() {
     }
 
-    public void addAdvice(Advice advice) throws SQLException {
+    public void addAdvice(Advice advice) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -27,12 +26,12 @@ public class AdviceDAO {
             session.save(advice);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Advice> getAllAdvices() throws SQLException {
+    public Collection<Advice> getAllAdvices() throws Exception {
         Session session;
         Collection<Advice> advices = new ArrayList<>();
         try {
@@ -41,12 +40,12 @@ public class AdviceDAO {
             advices = session.createCriteria(Advice.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return advices;
     }
 
-    public void deleteAdvice(Advice advice) throws SQLException {
+    public void deleteAdvice(Advice advice) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -54,7 +53,7 @@ public class AdviceDAO {
             session.delete(advice);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 }

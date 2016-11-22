@@ -9,7 +9,6 @@ import pojos.User;
 import pojos.UserState;
 import util.StringUtils;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
                             buttons.add(product.getName());
                         }
 
-                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_NAME_PROMPT, buttons);
+                        messageReceiver.onSendMessage(id, Texts.PRODUCT_NAME_PROMPT, buttons);
                         break;
                     case ADD_ADVICE:
                         user.setState(UserState.WAITING);
@@ -79,10 +78,10 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
                         break;
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (BotLogicException e) {
             messageReceiver.onMessageError(id, e.getMessage());
+        } catch (Exception e) {
+            messageReceiver.onMessageError(id, Texts.UNEXPECTED_ERROR);
         }
     }
 }

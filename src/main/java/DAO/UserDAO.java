@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import pojos.User;
 import util.HibernateUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,7 +18,7 @@ public class UserDAO {
     private UserDAO() {
     }
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -27,12 +26,12 @@ public class UserDAO {
             session.save(user);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<User> getAllUsers() throws SQLException {
+    public Collection<User> getAllUsers() throws Exception {
         Session session;
         Collection<User> users = new ArrayList<>();
         try {
@@ -41,12 +40,12 @@ public class UserDAO {
             users = session.createCriteria(User.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return users;
     }
 
-    public void deleteUser(User user) throws SQLException {
+    public void deleteUser(User user) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -54,10 +53,10 @@ public class UserDAO {
             session.delete(user);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
-    public void updateUser(User user) throws SQLException {
+    public void updateUser(User user) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -65,11 +64,11 @@ public class UserDAO {
             session.update(user);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
     
-    public User getUserById(Long id) throws SQLException {
+    public User getUserById(Long id) throws Exception {
         Session session;
         User user = null;
         try {
@@ -78,7 +77,7 @@ public class UserDAO {
             user = (User) session.get(User.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return user;
     }

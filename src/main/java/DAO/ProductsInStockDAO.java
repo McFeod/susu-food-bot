@@ -7,7 +7,6 @@ import pojos.Product;
 import pojos.ProductInStock;
 import util.HibernateUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +21,7 @@ public class ProductsInStockDAO {
     private ProductsInStockDAO() {
     }
 
-    public void addProductInStock(ProductInStock productInStock) throws SQLException {
+    public void addProductInStock(ProductInStock productInStock) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -30,12 +29,12 @@ public class ProductsInStockDAO {
             session.save(productInStock);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProductInStock> getAllProductsInStock() throws SQLException {
+    public Collection<ProductInStock> getAllProductsInStock() throws Exception {
         Session session;
         Collection<ProductInStock> productInStock = new ArrayList<>();
         try {
@@ -44,12 +43,12 @@ public class ProductsInStockDAO {
             productInStock = session.createCriteria(ProductInStock.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return productInStock;
     }
 
-    public void deleteProductInStock(ProductInStock product) throws SQLException {
+    public void deleteProductInStock(ProductInStock product) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -57,11 +56,11 @@ public class ProductsInStockDAO {
             session.delete(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    public ProductInStock getProductInStockById(Long id) throws SQLException {
+    public ProductInStock getProductInStockById(Long id) throws Exception {
         Session session;
         ProductInStock product = null;
         try {
@@ -70,13 +69,13 @@ public class ProductsInStockDAO {
             product = (ProductInStock) session.get(ProductInStock.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return product;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProductInStock> getProductsInStockByBuffet(Buffet buffet) throws SQLException {
+    public Collection<ProductInStock> getProductsInStockByBuffet(Buffet buffet) throws Exception {
         Session session;
         Collection<ProductInStock> products = new ArrayList<>();
         try {
@@ -88,13 +87,13 @@ public class ProductsInStockDAO {
             products = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return products;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProductInStock> getProductsInStockByProduct(Product product) throws SQLException {
+    public Collection<ProductInStock> getProductsInStockByProduct(Product product) throws Exception {
         Session session;
         Collection<ProductInStock> products = new ArrayList<>();
         try {
@@ -106,7 +105,7 @@ public class ProductsInStockDAO {
             products = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return products;
     }

@@ -2,12 +2,12 @@ package api.receive;
 
 
 import DAO.UserDAO;
+import api.Texts;
 import api.exceptions.BotLogicException;
 import pojos.User;
 import pojos.UserState;
 import util.StringUtils;
 
-import java.sql.SQLException;
 
 public class ReceiverListenerParam2 implements ITelegramBotReceiveListener {
 
@@ -53,10 +53,10 @@ public class ReceiverListenerParam2 implements ITelegramBotReceiveListener {
                         break;
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (BotLogicException e) {
             messageReceiver.onMessageError(id, e.getMessage());
+        } catch (Exception e) {
+            messageReceiver.onMessageError(id, Texts.UNEXPECTED_ERROR);
         }
     }
 }

@@ -7,7 +7,6 @@ import pojos.Product;
 import pojos.ProductNotInStock;
 import util.HibernateUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +21,7 @@ public class ProductsNotInStockDAO {
     private ProductsNotInStockDAO() {
     }
 
-    public void addProductNotInStock(ProductNotInStock productNotInStock) throws SQLException {
+    public void addProductNotInStock(ProductNotInStock productNotInStock) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -30,12 +29,12 @@ public class ProductsNotInStockDAO {
             session.save(productNotInStock);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProductNotInStock> getAllProductsNotInStock() throws SQLException {
+    public Collection<ProductNotInStock> getAllProductsNotInStock() throws Exception {
         Session session;
         Collection<ProductNotInStock> productNotInStock = new ArrayList<>();
         try {
@@ -44,12 +43,12 @@ public class ProductsNotInStockDAO {
             productNotInStock = session.createCriteria(ProductNotInStock.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return productNotInStock;
     }
 
-    public void deleteProductNotInStock(ProductNotInStock product) throws SQLException {
+    public void deleteProductNotInStock(ProductNotInStock product) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -57,11 +56,11 @@ public class ProductsNotInStockDAO {
             session.delete(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    public ProductNotInStock getProductNotInStockById(Long id) throws SQLException {
+    public ProductNotInStock getProductNotInStockById(Long id) throws Exception {
         Session session;
         ProductNotInStock product = null;
         try {
@@ -70,13 +69,13 @@ public class ProductsNotInStockDAO {
             product = (ProductNotInStock) session.get(ProductNotInStock.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return product;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProductNotInStock> getProductsNotInStockByBuffet(Buffet buffet) throws SQLException {
+    public Collection<ProductNotInStock> getProductsNotInStockByBuffet(Buffet buffet) throws Exception {
         Session session;
         Collection<ProductNotInStock> products = new ArrayList<>();
         try {
@@ -88,13 +87,13 @@ public class ProductsNotInStockDAO {
             products = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return products;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProductNotInStock> getProductsInStockByProduct(Product product) throws SQLException {
+    public Collection<ProductNotInStock> getProductsInStockByProduct(Product product) throws Exception {
         Session session;
         Collection<ProductNotInStock> products = new ArrayList<>();
         try {
@@ -106,7 +105,7 @@ public class ProductsNotInStockDAO {
             products = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return products;
     }

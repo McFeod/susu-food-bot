@@ -6,16 +6,16 @@ import DAO.ProductsNotInStockDAO;
 import api.exceptions.BotLogicException;
 import api.exceptions.FeedPointDoesNotExists;
 import api.exceptions.NotImplementedException;
-import api.exceptions.WrongRunOutParams;
+import api.exceptions.UnexpectedException;
 import pojos.Buffet;
 import pojos.Product;
 import pojos.ProductNotInStock;
 import util.StringUtils;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class MessagesEventHandler {
+
     public static Map<String, List<String>> getMessages(String buffetName) throws BotLogicException {
         Map<String, List<String>> messages = new HashMap<>();
         try {
@@ -52,8 +52,10 @@ public class MessagesEventHandler {
                     list.add(product.getProduct().getName());
                 }
             }
-        } catch (SQLException e) {
-            throw new NotImplementedException();
+        } catch (BotLogicException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UnexpectedException();
         }
         return messages;
     }
@@ -102,8 +104,10 @@ public class MessagesEventHandler {
             productNotInStock.setProduct(product);
             productNotInStock.setDate(calendar);
             productsNotInStockDAO.addProductNotInStock(productNotInStock);
-        } catch (SQLException e) {
-            throw new NotImplementedException();
+        } catch (BotLogicException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UnexpectedException();
         }
     }
 }

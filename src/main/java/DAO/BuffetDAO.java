@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import pojos.Buffet;
 import util.HibernateUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,7 +19,7 @@ public class BuffetDAO {
     private BuffetDAO() {
     }
 
-    public void addBuffet(Buffet buffet) throws SQLException {
+    public void addBuffet(Buffet buffet) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -28,12 +27,12 @@ public class BuffetDAO {
             session.save(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Buffet> getAllBuffets() throws SQLException {
+    public Collection<Buffet> getAllBuffets() throws Exception {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
         try {
@@ -42,12 +41,12 @@ public class BuffetDAO {
             buffets = session.createCriteria(Buffet.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return buffets;
     }
 
-    public void deleteBuffet(Buffet buffet) throws SQLException {
+    public void deleteBuffet(Buffet buffet) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -55,11 +54,11 @@ public class BuffetDAO {
             session.delete(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    public Buffet getBuffetById(Long id) throws SQLException {
+    public Buffet getBuffetById(Long id) throws Exception {
         Session session;
         Buffet buffet = null;
         try {
@@ -68,13 +67,13 @@ public class BuffetDAO {
             buffet = (Buffet) session.get(Buffet.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return buffet;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Buffet> getBuffetsByName(String name) throws SQLException {
+    public Collection<Buffet> getBuffetsByName(String name) throws Exception {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
         try {
@@ -85,13 +84,13 @@ public class BuffetDAO {
             buffets = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return buffets;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Buffet> getBuffetsByAdmin(Boolean isAdmin) throws SQLException {
+    public Collection<Buffet> getBuffetsByAdmin(Boolean isAdmin) throws Exception {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
         try {
@@ -102,13 +101,13 @@ public class BuffetDAO {
             buffets = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return buffets;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Buffet> getBuffetsByComplain(Boolean isComplained) throws SQLException {
+    public Collection<Buffet> getBuffetsByComplain(Boolean isComplained) throws Exception {
         Session session;
         Collection<Buffet> buffets = new ArrayList<>();
         try {
@@ -119,12 +118,12 @@ public class BuffetDAO {
             buffets = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return buffets;
     }
 
-    public void updateBuffet(Buffet buffet) throws SQLException {
+    public void updateBuffet(Buffet buffet) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -132,7 +131,7 @@ public class BuffetDAO {
             session.update(buffet);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 }
