@@ -65,13 +65,13 @@ public class MessageReceiver implements IMessageReceiver {
 
     @Override
     public void onAddFeedPoint(Long id, String text) throws BotLogicException {
-        FeedPointEventHandler.addFeedPoint(text);
+        FeedPointEventHandler.addFeedPoint(id,text);
         telegramBotAPI.sendMessage(id, "Место успешно добавлено.");
     }
 
     @Override
     public void onComplainFeedPoint(Long id, String text) throws BotLogicException {
-        FeedPointEventHandler.complainFeedPoint(text);
+        FeedPointEventHandler.complainFeedPoint(id,text);
         telegramBotAPI.sendMessage(id, "Жалоба принята.");
     }
 
