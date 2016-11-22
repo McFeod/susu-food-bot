@@ -3,7 +3,6 @@ package pojos;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 @Entity
 @Table(name = "products_not_in_stock")
@@ -18,8 +17,6 @@ public class ProductNotInStock implements Serializable {
     @ManyToOne(targetEntity = Buffet.class, cascade = CascadeType.ALL, optional = false)
     private Buffet buffet;
     
-    //@Column(name = "date")
-    //private Date date;
     @Column
     private Calendar date;
 
