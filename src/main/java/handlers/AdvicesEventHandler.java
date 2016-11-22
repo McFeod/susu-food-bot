@@ -1,14 +1,16 @@
 package handlers;
 
 import DAO.AdviceDAO;
+import api.exceptions.BotLogicException;
+import api.exceptions.UnexpectedException;
 import pojos.Advice;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class AdvicesEventHandler {
-    public static ArrayList<String> getAdvices() {
+
+    public static ArrayList<String> getAdvices() throws BotLogicException {
         ArrayList<String> messages = new ArrayList<>();
         try {
             AdviceDAO adviceDAO = AdviceDAO.getInstance();
@@ -16,20 +18,22 @@ public class AdvicesEventHandler {
             for (Advice advice : advices) {
                 messages.add(advice.getText());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (BotLogicException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UnexpectedException();
         }
         return messages;
     }
 
-    public static void addAdvice(String text) {
+    public static void addAdvice(String text) throws BotLogicException {
         AdviceDAO adviceDAO = AdviceDAO.getInstance();
         Advice advice = new Advice();
         advice.setText(text);
         try {
             adviceDAO.addAdvice(advice);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new UnexpectedException();
         }
     }
 }

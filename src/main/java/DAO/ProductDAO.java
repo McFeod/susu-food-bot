@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import pojos.Product;
 import util.HibernateUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,7 +19,7 @@ public class ProductDAO {
     private ProductDAO() {
     }
 
-    public void addProduct(Product product) throws SQLException {
+    public void addProduct(Product product) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -28,12 +27,12 @@ public class ProductDAO {
             session.save(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Product> getAllProducts() throws SQLException {
+    public Collection<Product> getAllProducts() throws Exception {
         Session session;
         Collection<Product> products = new ArrayList<>();
         try {
@@ -42,12 +41,12 @@ public class ProductDAO {
             products = session.createCriteria(Product.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return products;
     }
 
-    public void deleteProduct(Product product) throws SQLException {
+    public void deleteProduct(Product product) throws Exception {
         Session session;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -55,11 +54,11 @@ public class ProductDAO {
             session.delete(product);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    public Product getProductById(Long id) throws SQLException {
+    public Product getProductById(Long id) throws Exception {
         Session session;
         Product product = null;
         try {
@@ -68,13 +67,13 @@ public class ProductDAO {
             product = (Product) session.get(Product.class, id);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return product;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Product> getProductsByName(String name) throws SQLException {
+    public Collection<Product> getProductsByName(String name) throws Exception {
         Session session;
         Collection<Product> products = new ArrayList<>();
         try {
@@ -86,7 +85,7 @@ public class ProductDAO {
             session.getTransaction().commit();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return products;
     }

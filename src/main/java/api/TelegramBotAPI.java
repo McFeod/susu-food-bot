@@ -14,7 +14,6 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import pojos.User;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,16 +51,28 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                             User user;
                             try {
                                 user = userDAO.getUserById(update.getMessage().getChatId());
-                            } catch (ObjectNotFoundException e) {
+                            } catch (Exception e) {
                                 user = new User(update.getMessage().getChatId());
-                                userDAO.addUser(user);
+                                try {
+                                    userDAO.addUser(user);
+                                } catch (Exception e2) {
+                                    TelegramBotAPI.this.sendMessage(update.getMessage().getChatId(),
+                                            Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
+                                    return;
+                                }
                             }
 
                             // все-таки эта проверка нужна, потому что кто-то кидает SQLException
                             // а ловит ObjectNotFoundException
                             if (user == null) {
                                 user = new User(update.getMessage().getChatId());
-                                userDAO.addUser(user);
+                                try {
+                                    userDAO.addUser(user);
+                                } catch (Exception e) {
+                                    TelegramBotAPI.this.sendMessage(update.getMessage().getChatId(),
+                                            Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
+                                    return;
+                                }
                             }
 
                             switch (user.getState()) {
@@ -88,8 +99,10 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                                                 update.getMessage().getText());
                                     break;
                             }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
+                        } catch (Exception e) {
+                            TelegramBotAPI.this.sendMessage(update.getMessage().getChatId(),
+                                    Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
+                            return;
                         }
                     }
                 }
@@ -146,7 +159,7 @@ public class TelegramBotAPI implements ITelegramBotAPI {
         try {
             telegramLongPollingBot.sendMessage(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            //чтобы не вылетел e.printStackTrace();
         }
     }
 }
