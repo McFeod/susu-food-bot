@@ -2,6 +2,7 @@ package api.receive;
 
 import DAO.ProductDAO;
 import DAO.UserDAO;
+import api.Texts;
 import api.exceptions.BotLogicException;
 import pojos.Product;
 import pojos.User;
@@ -47,7 +48,7 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
                         user.setArgument(message);
                         userDAO.updateUser(user);
                         System.out.println("addfeedpoint " + message);
-                        messageReceiver.onSendMessage(id, "Введите описание места");
+                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_PLACE_PROMPT);
                         break;
                     case COMPLAIN:
                         user.setState(UserState.WAITING);
@@ -68,7 +69,7 @@ public class ReceiverListenerParam1 implements ITelegramBotReceiveListener {
                             buttons.add(product.getName());
                         }
 
-                        messageReceiver.onSendMessage(id, "Введите название", buttons);
+                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_NAME_PROMPT, buttons);
                         break;
                     case ADD_ADVICE:
                         user.setState(UserState.WAITING);
