@@ -8,7 +8,7 @@ import java.util.Calendar;
 @Table(name = "products_not_in_stock")
 public class ProductNotInStock implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(targetEntity = Product.class, cascade = CascadeType.ALL, optional = false)
