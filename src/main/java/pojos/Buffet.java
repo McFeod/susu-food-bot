@@ -20,8 +20,8 @@ public class Buffet {
     @Column(name = "complained", nullable = false, columnDefinition = "bool default false")
     private Boolean isComplained;
 
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne
+    private User user;
 
     public Buffet(Long id, String name, String place, Boolean isAdmin, Boolean isComplained) {
         this.id           = id;
@@ -51,12 +51,12 @@ public class Buffet {
         this.isComplained = isComplained;
     }
     
-    public Buffet(String name, String place, Boolean isAdmin, Boolean isComplained,long userId) {
+    public Buffet(String name, String place, Boolean isAdmin, Boolean isComplained, User user) {
         this.name         = name;
         this.place        = place;
         this.isAdmin      = isAdmin;
         this.isComplained = isComplained;
-        this.userId       = userId;
+        this.user       = user;
     }
 
     public Buffet() {
@@ -102,13 +102,13 @@ public class Buffet {
         this.isComplained = isComplained;
     }
     
-    public void setUserId(long userId)
+    public void setUser(User user)
     {
-        this.userId = userId;
+        this.user = user;
     }
     
-    public long getUserId()
+    public User getUser()
     {
-        return userId;
+        return user;
     }
 }

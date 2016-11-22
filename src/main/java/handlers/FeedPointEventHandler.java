@@ -42,10 +42,15 @@ public class FeedPointEventHandler {
 
     public static void addFeedPoint(long id,String name) {
         BuffetDAO buffetDAO = BuffetDAO.getInstance();
+        UserDAO userDAO = UserDAO.getInstance();
         Buffet buffet = new Buffet();
         buffet.setIsAdmin(false);
         buffet.setIsComplained(false);
-        buffet.setUserId(id);
+        try {
+            buffet.setUser(userDAO.getUserById(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         buffet.setName(name);
         try {
             buffetDAO.addBuffet(buffet);
@@ -63,7 +68,7 @@ public class FeedPointEventHandler {
                 Buffet buf = iterator.next();
                 buf.setIsComplained(true);
                 UserDAO uDAO = UserDAO.getInstance();
-                User user = uDAO.getUserById(buf.getUserId());
+                User user = buf.getUser();
                 if (user!= null)
                 {
                     user.setRating(user.getRating() - 50);
