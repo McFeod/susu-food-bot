@@ -20,6 +20,9 @@ public class Buffet {
     @Column(name = "complained", nullable = false)
     private Boolean isComplained;
 
+    @Column(name = "user_id")
+    private long userId;
+
     public Buffet(Long id, String name, String place, Boolean isAdmin, Boolean isComplained) {
         this.id           = id;
         this.name         = name;
@@ -46,6 +49,14 @@ public class Buffet {
         this.name         = name;
         this.isAdmin      = isAdmin;
         this.isComplained = isComplained;
+    }
+    
+    public Buffet(String name, String place, Boolean isAdmin, Boolean isComplained,long userId) {
+        this.name         = name;
+        this.place        = place;
+        this.isAdmin      = isAdmin;
+        this.isComplained = isComplained;
+        this.userId       = userId;
     }
 
     public Buffet() {
@@ -89,5 +100,15 @@ public class Buffet {
 
     public void setIsComplained(Boolean isComplained) {
         this.isComplained = isComplained;
+    }
+    
+    public void setUserId(long userId)
+    {
+        this.userId = userId;
+    }
+    
+    public long getUserId()
+    {
+        return userId;
     }
 }

@@ -1,8 +1,10 @@
 package handlers;
 
 import DAO.BuffetDAO;
+import DAO.UserDAO;
 import api.exceptions.FeedPointDoesNotExists;
 import pojos.Buffet;
+import pojos.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,11 +40,12 @@ public class FeedPointEventHandler {
         return feedPoints;
     }
 
-    public static void addFeedPoint(String name) {
+    public static void addFeedPoint(long id,String name) {
         BuffetDAO buffetDAO = BuffetDAO.getInstance();
         Buffet buffet = new Buffet();
         buffet.setIsAdmin(false);
         buffet.setIsComplained(false);
+        buffet.setUserId(id);
         buffet.setName(name);
         try {
             buffetDAO.addBuffet(buffet);
@@ -51,7 +54,7 @@ public class FeedPointEventHandler {
         }
     }
 
-    public static void complainFeedPoint(String name) throws FeedPointDoesNotExists {
+    public static void complainFeedPoint(long id,String name) throws FeedPointDoesNotExists {
         BuffetDAO buffetDAO = BuffetDAO.getInstance();
         try {
             Collection<Buffet> buffets = buffetDAO.getBuffetsByName(name);
@@ -59,6 +62,13 @@ public class FeedPointEventHandler {
             if (iterator.hasNext()) {
                 Buffet buf = iterator.next();
                 buf.setIsComplained(true);
+                UserDAO uDAO = UserDAO.getInstance();
+                User user = uDAO.getUserById(buf.getUserId());
+                if (user!= null)
+                {
+                    user.setRating(user.getRating() - 50);
+                    uDAO.updateUser(user);
+                }
                 buffetDAO.updateBuffet(buf);
             } else {
                 throw new FeedPointDoesNotExists();
