@@ -3,6 +3,7 @@ package api.receive;
 import DAO.BuffetDAO;
 import DAO.ProductDAO;
 import DAO.UserDAO;
+import api.Texts;
 import api.exceptions.BotLogicException;
 import pojos.Buffet;
 import pojos.Product;
@@ -63,14 +64,14 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_FEED_POINT);
                         userDAO.updateUser(user);
-                        messageReceiver.onSendMessage(id, "Введите название места:");
+                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_NAME_PROMPT);
                     } else {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_FEED_POINT_PLACE);
                         user.setArgument(responseText);
                         userDAO.updateUser(user);
-                        messageReceiver.onSendMessage(id, "Введите описание места:");
+                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_PLACE_PROMPT);
                     }
                     break;
                 case COMPLAIN:
@@ -86,7 +87,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         for (Buffet buffet : buffets) {
                             buttons.add(buffet.getName());
                         }
-                        messageReceiver.onSendMessage(id, "Введите название места:", buttons);
+                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_NAME_PROMPT, buttons);
                     } else {
                         messageReceiver.onComplainFeedPoint(id, responseText);
                     }
@@ -108,7 +109,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         for (Buffet buffet : buffets) {
                             buttons.add(buffet.getName());
                         }
-                        messageReceiver.onSendMessage(id, "Введите название места:", buttons);
+                        messageReceiver.onSendMessage(id, Texts.FEEDPOINT_NAME_PROMPT, buttons);
                     } else {
                         UserDAO userDAO = UserDAO.getInstance();
                         User user = userDAO.getUserById(id);
@@ -122,7 +123,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         for (Product product : products) {
                             buttons.add(product.getName());
                         }
-                        messageReceiver.onSendMessage(id, "Введите название продукта:", buttons);
+                        messageReceiver.onSendMessage(id, Texts.PRODUCT_NAME_PROMPT, buttons);
                     }
                     break;
 
@@ -135,13 +136,13 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
                         User user = userDAO.getUserById(id);
                         user.setState(UserState.ADD_ADVICE);
                         userDAO.updateUser(user);
-                        messageReceiver.onSendMessage(id, "Введите текст совета:");
+                        messageReceiver.onSendMessage(id, Texts.ADVICE_TEXT_PROMPT);
                     } else {
                         messageReceiver.onAddAdvice(id, responseText);
                     }
                     break;
                 case CANCEL:
-                    messageReceiver.onSendMessage(id, "Нечего отменять.");
+                    messageReceiver.onSendMessage(id, Texts.CANCEL_FAILURE);
                     break;
             }
         }
@@ -150,7 +151,7 @@ public class ReceiverListener implements ITelegramBotReceiveListener {
         }
         catch (Exception e){
             e.printStackTrace();
-            messageReceiver.onMessageError(id, "Something unexpected");
+            messageReceiver.onMessageError(id, Texts.UNEXPECTED_ERROR);
         }
     }
 }

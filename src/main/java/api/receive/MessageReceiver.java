@@ -1,6 +1,7 @@
 package api.receive;
 
 import api.ITelegramBotAPI;
+import api.Texts;
 import api.exceptions.*;
 import handlers.AdvicesEventHandler;
 import handlers.FeedPointEventHandler;
@@ -21,12 +22,12 @@ public class MessageReceiver implements IMessageReceiver {
 
     @Override
     public void onMessageError(Long id, String text) {
-        telegramBotAPI.sendMessage(id, "*Error:*\n" + text);
+        telegramBotAPI.sendMessage(id, Texts.ERROR_HEADER + text);
     }
 
     @Override
     public void onStart(Long id) throws BotLogicException {
-        onHelp(id);
+        telegramBotAPI.sendMessage(id, Texts.START_PROMPT);
     }
 
     @Override
@@ -35,16 +36,7 @@ public class MessageReceiver implements IMessageReceiver {
 
     @Override
     public void onHelp(Long id) throws BotLogicException {
-        telegramBotAPI.sendMessage(id,
-                "/help - список команд для бота.\n" +
-                "/feedpoints - список проверенных мест, можно поесть.\n" +
-                "/userfeedpoints - список мест, где можно поесть.\n" +
-                "/addfeedpoint <место> - добавить новое место, где можно поесть.\n" +
-                "/complain <место> - кто-то наврал вам про буфет? Пожалуйтесь, и мы его найдем.\n" +
-                "/msglist <место> - свежие новости о наличии вкусностей в ваших любимых буфетах.\n" +
-                "/runout <место> - что-то закрылось/закончилось? Сообщите об этом всем.\n" +
-                "/advices - узнать, что советуют другие пользователи.\n" +
-                "/addadvice <текст> - что вы советуете другим пользователям? Добавьте свой совет.");
+        telegramBotAPI.sendMessage(id, Texts.HELP_MESSAGE);
     }
 
     @Override
@@ -53,7 +45,7 @@ public class MessageReceiver implements IMessageReceiver {
         if (feedPoints.isEmpty()) {
             throw new EmptyFeedPointList();
         }
-        telegramBotAPI.sendMessage(id, "*Feed points:*\n"
+        telegramBotAPI.sendMessage(id, Texts.FEEDPOINTS_HEADER
                 + StringUtils.join(feedPoints.entrySet(), "\n"));
     }
 
@@ -63,20 +55,20 @@ public class MessageReceiver implements IMessageReceiver {
         if (feedPoints.isEmpty()) {
             throw new EmptyUserFeedPointList();
         }
-        telegramBotAPI.sendMessage(id, "*User feed points:*\n"
+        telegramBotAPI.sendMessage(id, Texts.USERFEEDPOINTS_HEADER
                 + StringUtils.join(feedPoints.entrySet(), "\n"));
     }
 
     @Override
     public void onAddFeedPoint(Long id, String buffet, String place) throws BotLogicException {
         FeedPointEventHandler.addFeedPoint(id, buffet, place);
-        telegramBotAPI.sendMessage(id, "Место успешно добавлено.");
+        telegramBotAPI.sendMessage(id, Texts.FEEDPOINT_CONFIRMATION);
     }
 
     @Override
     public void onComplainFeedPoint(Long id, String text) throws BotLogicException {
         FeedPointEventHandler.complainFeedPoint(id, text);
-        telegramBotAPI.sendMessage(id, "Жалоба принята.");
+        telegramBotAPI.sendMessage(id, Texts.COMPLAIN_CONFIRMATION);
     }
 
     @Override
@@ -88,9 +80,9 @@ public class MessageReceiver implements IMessageReceiver {
         }
 
         StringBuilder builder = new StringBuilder();
-        builder.append("*Messages:*");
+        builder.append(Texts.MESSAGES_HEADER);
         for (Map.Entry<String, List<String>> message : messages.entrySet()) {
-            builder.append(String.format("\nВ \"%s\" закончились продукты:\n", message.getKey()));
+            builder.append(String.format(Texts.MESSAGES_PLACE_DELIMITER, message.getKey()));
             for (String product : message.getValue()) {
                 builder.append(String.format("• %s\n", product));
             }
@@ -101,7 +93,7 @@ public class MessageReceiver implements IMessageReceiver {
     @Override
     public void onRunOut(Long id, String buffet, String product) throws BotLogicException {
         MessagesEventHandler.runOut(buffet, product);
-        telegramBotAPI.sendMessage(id, "Сообщение зарегистрировано.");
+        telegramBotAPI.sendMessage(id, Texts.RUNOUT_CONFIRMATION);
     }
 
     @Override
@@ -110,18 +102,18 @@ public class MessageReceiver implements IMessageReceiver {
         if (advices.isEmpty()) {
             throw new EmptyAdviceList();
         }
-        telegramBotAPI.sendMessage(id, "*Advices:*\n" + StringUtils.join(advices, "\n\n"));
+        telegramBotAPI.sendMessage(id, Texts.ADVICES_HEADER + StringUtils.join(advices, "\n\n"));
     }
 
     @Override
     public void onAddAdvice(Long id, String text) throws BotLogicException {
         AdvicesEventHandler.addAdvice(text);
-        telegramBotAPI.sendMessage(id, "Совет успешно добавлен.");
+        telegramBotAPI.sendMessage(id, Texts.ADVICE_CONFIRMATION);
     }
 
     @Override
     public void onCancel(Long id) {
-        telegramBotAPI.sendMessage(id, "Отменено.");
+        telegramBotAPI.sendMessage(id, Texts.CANCEL_CONFIRMATION);
     }
 
     @Override
