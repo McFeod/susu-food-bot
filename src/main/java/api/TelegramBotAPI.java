@@ -2,7 +2,6 @@ package api;
 
 import DAO.UserDAO;
 import api.receive.ITelegramBotReceiveListener;
-import org.hibernate.ObjectNotFoundException;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -45,7 +44,7 @@ public class TelegramBotAPI implements ITelegramBotAPI {
 
                 @Override
                 public void onUpdateReceived(Update update) {
-                    if ((update != null) && update.hasMessage()) {
+                    if ((update != null) && update.hasMessage() && update.getMessage().hasText()) {
                         try {
                             UserDAO userDAO = UserDAO.getInstance();
                             User user;
