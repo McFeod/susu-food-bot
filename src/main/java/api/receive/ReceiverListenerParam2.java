@@ -1,13 +1,11 @@
 package api.receive;
 
-
 import DAO.UserDAO;
 import api.Texts;
 import api.exceptions.BotLogicException;
 import pojos.User;
 import pojos.UserState;
 import util.StringUtils;
-
 
 public class ReceiverListenerParam2 implements ITelegramBotReceiveListener {
 
