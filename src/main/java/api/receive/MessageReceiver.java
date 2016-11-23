@@ -46,7 +46,7 @@ public class MessageReceiver implements IMessageReceiver {
             throw new EmptyFeedPointList();
         }
         telegramBotAPI.sendMessage(id, Texts.FEEDPOINTS_HEADER
-                + StringUtils.join(feedPoints.entrySet(), "\n"));
+                + StringUtils.join(feedPoints.entrySet(), "\n\n"));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MessageReceiver implements IMessageReceiver {
             throw new EmptyUserFeedPointList();
         }
         telegramBotAPI.sendMessage(id, Texts.USERFEEDPOINTS_HEADER
-                + StringUtils.join(feedPoints.entrySet(), "\n"));
+                + StringUtils.join(feedPoints.entrySet(), "\n\n"));
     }
 
     @Override

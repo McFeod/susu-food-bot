@@ -38,12 +38,12 @@ public class StringUtils {
         Iterator<Map.Entry<String, String>> iterator = iterable.iterator();
         if (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
-            builder.append(entry.getKey() + " - " + entry.getValue());
+            builder.append("_" + entry.getKey() + "_ - " + entry.getValue());
         }
         while (iterator.hasNext()) {
             builder.append(delimiter);
             Map.Entry<String, String> entry = iterator.next();
-            builder.append(entry.getKey() + " - " + entry.getValue());
+            builder.append("_" + entry.getKey() + "_ - " + entry.getValue());
         }
         return builder.toString();
     }
