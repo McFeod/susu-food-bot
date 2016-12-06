@@ -1,0 +1,6 @@
+{
+  "name": "SUSU Food Bot",
+  "tagline": "Бот для Telegram",
+  "body": "@susufoodbot\r\n============\r\n\r\nДанный проект направлен на создание бота для Telegram, который делится информацией о том, где можно перекусить на территории университетского городка ЮУрГУ.\r\n\r\nНа настоящий момент бот позволяет:\r\n\r\n - Получать информацию о местах, где можно перекусить\r\n - Расширять список таких мест, предлагая свои\r\n - Отслеживать информацию о том, какие продукты где закончились\r\n - Информировать других пользователей бота о подобных случаях\r\n - Просто делиться опытом\r\n - и т.п.\r\n\r\nPromo video\r\n-----------\r\n \r\n[![promo](https://img.youtube.com/vi/rD-KXM6IMaI/0.jpg)](https://www.youtube.com/watch?v=rD-KXM6IMaI)\r\n\r\nПообщаться с ботом можно, добавив в контакты [@susufoodbot](https://web.telegram.org/#/im?p=@susufoodbot).\r\n\r\nПодробно об этих и других возможностях можно узнать у самого бота, отправив ему команду /help.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
