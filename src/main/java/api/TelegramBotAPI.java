@@ -16,6 +16,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import pojos.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static api.APIConstants.BOT_NAME;
@@ -148,8 +149,8 @@ public class TelegramBotAPI implements ITelegramBotAPI {
         SendMessage message = new SendMessage();
         message.enableMarkdown(true);
         message.setChatId(id.toString());
-        message.setText(text);
-
+        
+        
         if (buttons != null) {
             ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
             keyboard.setResizeKeyboard(true);
@@ -167,7 +168,19 @@ public class TelegramBotAPI implements ITelegramBotAPI {
         }
 
         try {
-            telegramLongPollingBot.sendMessage(message);
+            final int SIZE = 4096;
+            List<String> messages = new ArrayList();
+            while (text.length() > SIZE)
+            {
+                messages.add(text.substring(0, SIZE));
+                text = text.substring(SIZE-1,text.length());
+            }
+            messages.add(text);
+            for (int i = 0; i < messages.size(); i++)
+            {
+                message.setText(messages.get(i));
+                telegramLongPollingBot.sendMessage(message);
+            }
         } catch (TelegramApiException e) {
             //чтобы не вылетел e.printStackTrace();
         }
