@@ -1,6 +1,8 @@
 package api;
 
 import DAO.UserDAO;
+import api.exceptions.BotLogicException;
+import api.exceptions.MessageTooLongException;
 import api.receive.ITelegramBotReceiveListener;
 import org.telegram.telegrambots.TelegramApiException;
 import org.telegram.telegrambots.TelegramBotsApi;
@@ -45,63 +47,72 @@ public class TelegramBotAPI implements ITelegramBotAPI {
                 @Override
                 public void onUpdateReceived(Update update) {
                     if ((update != null) && update.hasMessage() && update.getMessage().hasText()) {
+                        Long updateId = update.getMessage().getChatId();
+                        String updateText = update.getMessage().getText();
                         try {
-                            UserDAO userDAO = UserDAO.getInstance();
-                            User user;
+                            if (updateText.length() > 1024) {
+                                throw new MessageTooLongException();
+                            }
+
                             try {
-                                user = userDAO.getUserById(update.getMessage().getChatId());
-                            } catch (Exception e) {
-                                user = new User(update.getMessage().getChatId());
+                                UserDAO userDAO = UserDAO.getInstance();
+                                User user;
                                 try {
-                                    userDAO.addUser(user);
-                                } catch (Exception e2) {
-                                    TelegramBotAPI.this.sendMessage(update.getMessage().getChatId(),
-                                            Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
-                                    return;
-                                }
-                            }
-
-                            // все-таки эта проверка нужна, потому что кто-то кидает SQLException
-                            // а ловит ObjectNotFoundException
-                            if (user == null) {
-                                user = new User(update.getMessage().getChatId());
-                                try {
-                                    userDAO.addUser(user);
+                                    user = userDAO.getUserById(updateId);
                                 } catch (Exception e) {
-                                    TelegramBotAPI.this.sendMessage(update.getMessage().getChatId(),
+                                    user = new User(updateId);
+                                    try {
+                                        userDAO.addUser(user);
+                                    } catch (Exception e2) {
+                                        TelegramBotAPI.this.sendMessage(updateId,
                                             Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
-                                    return;
+                                        return;
+                                    }
                                 }
-                            }
 
-                            switch (user.getState()) {
-                                case WAITING:
-                                    if (receiveListener != null)
-                                        receiveListener.onMessageReceive(
-                                                update.getMessage().getChatId(),
-                                                update.getMessage().getText());
-                                    break;
-                                case ADD_ADVICE:
-                                case ADD_FEED_POINT:
-                                case COMPLAIN:
-                                case RUN_OUT_BUFFET:
-                                    if (receiveListenerParam1 != null)
-                                        receiveListenerParam1.onMessageReceive(
-                                                update.getMessage().getChatId(),
-                                                update.getMessage().getText());
-                                    break;
-                                case ADD_FEED_POINT_PLACE:
-                                case RUN_OUT_PRODUCT:
-                                    if (receiveListenerParam2 != null)
-                                        receiveListenerParam2.onMessageReceive(
-                                                update.getMessage().getChatId(),
-                                                update.getMessage().getText());
-                                    break;
-                            }
-                        } catch (Exception e) {
-                            TelegramBotAPI.this.sendMessage(update.getMessage().getChatId(),
+                                // все-таки эта проверка нужна, потому что кто-то кидает SQLException
+                                // а ловит ObjectNotFoundException
+                                if (user == null) {
+                                    user = new User(updateId);
+                                    try {
+                                        userDAO.addUser(user);
+                                    } catch (Exception e) {
+                                        TelegramBotAPI.this.sendMessage(updateId,
+                                            Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
+                                        return;
+                                    }
+                                }
+
+                                switch (user.getState()) {
+                                    case WAITING:
+                                        if (receiveListener != null)
+                                            receiveListener.onMessageReceive(
+                                                updateId,
+                                                updateText);
+                                        break;
+                                    case ADD_ADVICE:
+                                    case ADD_FEED_POINT:
+                                    case COMPLAIN:
+                                    case RUN_OUT_BUFFET:
+                                        if (receiveListenerParam1 != null)
+                                            receiveListenerParam1.onMessageReceive(
+                                                updateId,
+                                                updateText);
+                                        break;
+                                    case ADD_FEED_POINT_PLACE:
+                                    case RUN_OUT_PRODUCT:
+                                        if (receiveListenerParam2 != null)
+                                            receiveListenerParam2.onMessageReceive(
+                                                updateId,
+                                                updateText);
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                TelegramBotAPI.this.sendMessage(updateId,
                                     Texts.ERROR_HEADER + Texts.UNEXPECTED_ERROR);
-                            return;
+                            }
+                        } catch (BotLogicException e) {
+                            TelegramBotAPI.this.sendMessage(updateId, Texts.ERROR_HEADER + e.getMessage());
                         }
                     }
                 }
